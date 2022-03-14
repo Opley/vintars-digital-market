@@ -147,7 +147,7 @@ textarea::placeholder {
 
 .sizes input {
   position: relative;
-  /* -webkit-appearance: none; */
+  -webkit-appearance: none;
   width: 100%;
   height: 5vh;
   opacity: 0.5;
