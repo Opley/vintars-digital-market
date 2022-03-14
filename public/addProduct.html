@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VDM - Add A Product</title>
+
+    <link rel="stylesheet" href="../css/nav.css" />
+    <link rel="stylesheet" href="../css/utils.css" />
+    <link rel="stylesheet" href="../css/addProduct.css" />
+  </head>
+  <body>
+    <div class="body">
+      <nav class="navBar">
+        <!-- scripted -->
+      </nav>
+
+      <img src="img/loader.gif" class="loader" alt="" />
+
+      <div class="alert-box">
+        <img src="img/error.png" class="alert-img" alt="" />
+        <p class="alert-msg">Error message</p>
+      </div>
+
+      <div class="cover">
+        <!-- <img src="img/default.svg" alt="" /> -->
+      </div>
+
+      <div class="product-details">
+        <input type="text" placeholder="product name" class="name" />
+        <input type="text" placeholder="brief description" class="brief-des" />
+        <textarea
+          class="detailed-des"
+          id="product-des"
+          placeholder="Detailed description"
+        ></textarea>
+      </div>
+
+      <div class="product-images">
+        <img id="main-image" class="product-image" src="img/noimg.png" alt="" />
+        <p>upload images <img src="img/camera.png" alt="" /></p>
+        <div class="images">
+          <input type="file" id="firstUpload" class="fileUpload" />
+          <label for="firstUpload"></label>
+
+          <input type="file" id="secondUpload" class="fileUpload" />
+          <label for="secondUpload"></label>
+
+          <input type="file" id="thirdUpload" class="fileUpload" />
+          <label for="thirdUpload"></label>
+
+          <input type="file" id="fourthUpload" class="fileUpload" />
+          <label for="fourthUpload"></label>
+        </div>
+      </div>
+
+      <div class="sizes">
+        <h2 class="sizes-title">size available</h2>
+        <input type="checkbox" class="size-checkbox" value="s" />
+        <input type="checkbox" class="size-checkbox" value="m" />
+        <input type="checkbox" class="size-checkbox" value="l" />
+      </div>
+
+      <div class="prices">
+        <input class="stocks" type="number" placeholder="Items in stock" />
+        <input class="price" type="number" placeholder="price" />
+      </div>
+
+      <div class="btns">
+        <button class="draft btn">save draft</button>
+        <button class="add-product btn">add product</button>
+      </div>
+    </div>
+    <script type="module" src="../js/utils.js"></script>
+    <script src="../js/nav.js"></script>
+    <script type="module" src="../js/addProduct.js"></script>
+  </body>
+</html>

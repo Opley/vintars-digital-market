@@ -1,0 +1,257 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* 
+#e9f5e7
+#0C3507
+*/
+
+header {
+  width: 100%;
+  height: clamp(1rem, 100vw, 100vh);
+  background-image: url("../img/default.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+@media screen and (min-width: 900px) {
+  header {
+    margin-top: -10vh;
+    height: 100vh;
+  }
+}
+
+.mainContainer {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+main {
+  margin: 1rem auto;
+  max-width: 1200px;
+}
+
+.featuredProducts {
+  position: relative;
+  overflow: auto;
+  width: 100%;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+}
+
+@media screen and (min-width: 900px) {
+  .featuredProducts {
+    overflow-x: hidden;
+  }
+}
+
+.featuredProductTitle,
+.allProductsTitle {
+  font-size: clamp(1.2rem, 3vw, 2.4rem);
+  color: #464646;
+  text-transform: capitalize;
+  margin-bottom: 0.5rem;
+}
+
+.setOfProducts {
+  display: flex;
+  gap: 0.5rem;
+  scroll-snap-align: start;
+}
+
+.setOfProducts img {
+  width: clamp(1rem, calc(33.33vw - 2rem), 15rem);
+  height: clamp(1rem, 40vw, 320.3px);
+  object-fit: cover;
+}
+
+/* CATEGORIES */
+.categories {
+  margin-top: 5rem;
+  display: grid;
+  justify-content: center;
+  gap: 0.5rem;
+  grid-template-columns: repeat(2, 5rem);
+  text-align: center;
+}
+
+/* add a line through the categories */
+
+.categoriesTitle {
+  text-transform: capitalize;
+  grid-column: span 2;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.link:hover {
+  color: #e9f5e7;
+  background-color: #464646;
+}
+
+.men,
+.women,
+.goods,
+.misc {
+  text-transform: capitalize;
+  padding: 1rem;
+  color: #e9f5e7;
+  background-color: #383838;
+}
+
+.men {
+  color: red;
+  border-top-left-radius: 4px;
+}
+
+.women {
+  border-top-right-radius: 4px;
+  color: pink;
+}
+
+.goods {
+  color: green;
+  border-bottom-left-radius: 4px;
+}
+.misc {
+  color: yellow;
+  border-bottom-right-radius: 4px;
+}
+
+/* All PRODUCTS */
+.allProductsContainer {
+  /* margin-top: 5rem; */
+}
+
+.allProductsTitle {
+  text-align: center;
+}
+
+.allProductsBody {
+  display: grid;
+  align-items: start;
+  justify-content: center;
+  gap: 0.5rem;
+  grid-template-columns: repeat(
+    auto-fit,
+    clamp(1rem, calc(50% - 0.35rem), 15rem)
+  );
+  grid-auto-rows: clamp(1rem, 60vw, 300px);
+}
+
+.products {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.products > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail {
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 2px;
+  text-decoration: none;
+  bottom: 3px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.5rem 1rem;
+  background-color: #e9f5e777;
+  color: #383838;
+  text-transform: capitalize;
+  width: 90%;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 9px #383838;
+  transition: all 0.5s ease-out;
+}
+
+.detail:hover {
+  color: #383838;
+  background-color: #e9f5e7;
+}
+
+.heart {
+  right: 2px;
+  top: 2px;
+  color: #e24c4b;
+  position: absolute;
+}
+
+footer {
+  padding: 5vw;
+  color: #e9f5e7;
+  background-color: #383838;
+  display: grid;
+  gap: 2.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+footer .logo img {
+  width: 100%;
+  height: clamp(20vw, 50vw, 100vw);
+  object-fit: cover;
+}
+
+footer .aboutParagraph {
+  font-size: clamp(1.2rem, 1vw, 1.8rem);
+  line-height: 1.6;
+  text-align: center;
+}
+
+.contacts {
+  text-align: center;
+  font-size: 1.6rem;
+  line-height: 1.6;
+}
+
+.name,
+.email,
+.telephone {
+  font-size: clamp(1.2rem, 1vw, 1.8rem);
+}
+
+@media screen and (min-width: 600px) {
+  footer {
+    overflow: hidden;
+    border-bottom: 25px solid #0c3507;
+    margin-top: 10rem;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+    gap: 0 2.5rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  footer .logo img {
+    object-fit: contain;
+    height: clamp(1px, 40vw, 300px);
+  }
+
+  .contacts {
+    grid-row: 1/2;
+    grid-column: 2/3;
+  }
+
+  .aboutParagraph {
+    grid-column: 1/-1;
+  }
+}
