@@ -105,10 +105,10 @@ window.onload = () => {
   imagePaths = product.imagePaths;
   sizes = product.sizes;
 
-  // product.sizes.forEach((size) => {
-  //   const [input] = document.querySelectorAll(`input[value=${size}]`);
-  //   input.checked = true;
-  // });
+  product.sizes.forEach((size) => {
+    const [input] = document.querySelectorAll(`input[value=${size}]`);
+    input.checked = true;
+  });
 
   let productImage = document.querySelector(".product-image");
   productImage.src = product.imagePaths.find((el) => el !== null);
