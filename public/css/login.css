@@ -76,6 +76,7 @@ section img {
 }
 
 .login-form input {
+  font-size: 1.6rem;
   outline: none;
   border: none;
   box-shadow: 2px 2px 6px #646464;

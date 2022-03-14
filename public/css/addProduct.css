@@ -50,6 +50,7 @@ textarea::placeholder {
 }
 
 .product-details input {
+  font-size: 1.6rem;
   display: block;
 }
 
