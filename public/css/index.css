@@ -198,6 +198,7 @@ main {
 
 footer {
   padding: 5vw;
+  padding-top: 0;
   color: #e9f5e7;
   background-color: #383838;
   display: grid;
@@ -232,11 +233,10 @@ footer .aboutParagraph {
 
 @media screen and (min-width: 600px) {
   footer {
-    overflow: hidden;
-    border-bottom: 25px solid #0c3507;
+    border-bottom: 25px solid #0c350754;
     margin-top: 10rem;
-    border-top-right-radius: 50%;
-    border-top-left-radius: 50%;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
     gap: 0 2.5rem;
     grid-template-columns: repeat(2, 1fr);
   }

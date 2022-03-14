@@ -110,7 +110,7 @@ window.onload = async () => {
     phone.innerHTML = `Phone: ${user.phone}`;
     phone.href = `tel:${user.phone}`;
 
-    contactInfo.classList.remove("hide-contact-info");
+    contactInfo.classList.toggle("hide-contact-info");
   });
 
   //============Close Contact Information
