@@ -83,6 +83,10 @@ section img {
   padding: 0.5rem 1rem;
 }
 
+.login-form input::placeholder {
+  text-transform: capitalize;
+}
+
 .loginBtn {
   outline: none;
   border: none;
@@ -90,13 +94,12 @@ section img {
   background-color: #383838;
   border-radius: 4px;
   padding: 1rem;
+  cursor: pointer;
 }
 
 .loginBtn:hover {
-  background-color: #e9f5e7;
-  color: #383838;
+  opacity: 0.5;
 }
-
 a {
   color: #0c3507;
   display: block;

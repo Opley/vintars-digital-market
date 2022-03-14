@@ -42,11 +42,11 @@ section img {
   background-color: #383838;
   border-radius: 4px;
   padding: 1rem;
+  cursor: pointer;
 }
 
 .signupBtn:hover {
-  background-color: #e9f5e7;
-  color: #383838;
+  opacity: 0.85;
 }
 
 a {

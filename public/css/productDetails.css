@@ -178,19 +178,28 @@
   align-items: center;
   height: 15%;
   width: 100%;
+  font-size: 1.6rem;
 }
 
 .sizes {
   -webkit-appearance: none;
   position: relative;
   font-size: 1.2rem;
+  font-weight: 100;
   border-radius: 8px;
   color: #383838;
   border: 2px solid #383838;
   outline: none;
-
   width: 20%;
   height: 5vh;
+  cursor: pointer;
+}
+
+.sizes:hover,
+.sizes:checked:hover {
+  color: #e9f5e7;
+  background-color: #383838;
+  opacity: 0.5;
 }
 
 .sizes:checked {
@@ -201,6 +210,7 @@
 }
 
 .sizes::after {
+  font-weight: inherit;
   content: attr(value);
   position: absolute;
   left: 50%;
@@ -244,6 +254,11 @@
 
 .add-to-cart {
   box-shadow: 0 0 9px #e9f5e7;
+}
+.add-to-cart:hover {
+  background-color: #383838;
+  opacity: 0.5;
+  cursor: pointer;
 }
 
 .add-to-wishlist {
@@ -292,12 +307,18 @@
 }
 
 .phone:link,
-.phone:active {
+.phone:visited {
   padding: 0.5rem 1rem;
   font-size: 1.2rem;
   color: #e9f5e7;
   border-radius: 4px;
   box-shadow: 0 0 9px #e9f5e73b;
+}
+
+.phone:hover,
+.phone:active {
+  background-color: #e9f5e7;
+  color: #383838;
 }
 
 .close {

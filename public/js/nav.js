@@ -69,13 +69,13 @@ const renderNavBar = () => {
   </svg>
   <ul class="hamburger-links">
     <li class="links"><a href="/">Home</a></li>
-    <li class="links"><a href="/all-products">All Products</a></li>
+    <li class="links"><a href="/all-products">Products</a></li>
      ${
        sessionStorage?.user
          ? `<li class="links"><a href="/seller" onclick="clearScroll()">Seller's Dashboard</a></li>
             <li class="links"><a href="/login" onclick="logout()">Logout as (${user.email})</a></li>`
          : `<li class="links"><a href="/seller" onclick="clearScroll()">Become A Seller</a></li>
-            <li class="links"><a href="/login">login</a></li>`
+            <li class="links"><a href="/login">Login</a></li>`
      }
   </ul>
 </div>
@@ -83,11 +83,11 @@ const renderNavBar = () => {
 <div class="bigNav">
   <ul class="links">
     <a href="/"><li class="link">Home</li></a>
-    <a href="/all-products"> <li class="link">all-products</li></a>
+    <a href="/all-products"> <li class="link">Products</li></a>
     ${
       sessionStorage.user
         ? `<li class="links"><a href="/seller">Seller's Dashboard</a></li><li class="links"><a href="/login" onclick="logout()">${user.email}</a></li>`
-        : `<li class="links"><a href="/seller">Become A Seller</a></li><li class="links"><a href="/login">login</a></li>`
+        : `<li class="links"><a href="/seller">Become A Seller</a></li><li class="links"><a href="/login">Login</a></li>`
     }
   </ul>
 </div>
