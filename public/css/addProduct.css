@@ -126,14 +126,14 @@ textarea::placeholder {
 .sizes {
   margin: 0 1rem;
   padding: 0.5rem;
-  display: grid;
-  justify-content: center;
+  /* display: grid; */
+  /* justify-content: center; */
   gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(30%, 75px));
-  grid-template-rows: min-content;
+  /* grid-template-columns: repeat(auto-fit, minmax(30%, 75px)); */
+  /* grid-template-rows: min-content; */
   background-color: #e9f5e7;
   border-radius: 8px;
-  height: 20vh;
+  /* height: 20vh; */
 }
 
 .sizes-title {
