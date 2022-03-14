@@ -17,7 +17,7 @@ const port = process.env.PORT || 5000;
 
 //===========Server
 app.listen(port, "127.0.0.1", () => {
-  console.log("server is listening on port 3000");
+  console.log(`server is listening on port ${port}`);
 });
 
 // I don't think it is possible to export from server.js
