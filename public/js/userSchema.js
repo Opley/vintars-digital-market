@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
       validator: function (el) {
         return el === this.password;
       },
-      message: "Passwords are not the same!",
+      message: "Please type in the correct confirmation password!",
     },
   },
   phone: {
