@@ -123,8 +123,8 @@ textarea::placeholder {
   display: grid;
   justify-content: center;
   gap: 1rem;
-  /* grid-template-columns: repeat(auto-fit, minmax(30%, 75px)); */
-  /* grid-template-rows: min-content; */
+  grid-template-columns: repeat(3, 30%);
+  grid-template-rows: min-content;
   background-color: #e9f5e7;
   border-radius: 8px;
   height: 20vh;
