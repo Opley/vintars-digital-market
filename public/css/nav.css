@@ -104,7 +104,7 @@
   opacity: 0.5;
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 900px) {
   .svgMenu {
     display: none;
   }

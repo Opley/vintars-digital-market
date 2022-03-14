@@ -86,7 +86,7 @@ const renderNavBar = () => {
     <a href="/all-products"> <li class="link">Products</li></a>
     ${
       sessionStorage.user
-        ? `<li class="links"><a href="/seller">Seller's Dashboard</a></li><li class="links"><a href="/login" onclick="logout()">${user.email}</a></li>`
+        ? `<li class="links"><a href="/seller">Seller's Dashboard</a></li><li class="links"><a href="/login" onclick="logout()">Logout</a></li>`
         : `<li class="links"><a href="/seller">Become A Seller</a></li><li class="links"><a href="/login">Login</a></li>`
     }
   </ul>

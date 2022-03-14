@@ -1,7 +1,14 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  position: relative;
-  max-width: 750px;
+  /* position: relative; */
+  max-width: 1200px;
   margin: 0 auto;
+  font-size: 62.5%;
 }
 
 .cover {
@@ -41,6 +48,7 @@ input,
 textarea {
   outline: none;
   border: none;
+  font-size: clamp(1.2rem, 2.4vw, 2.4rem);
   text-transform: capitalize;
   border-radius: 4px;
   color: #383838;
@@ -69,22 +77,32 @@ textarea::placeholder {
 .product-images {
   background-color: #e9f5e7;
   margin: 2rem 1rem;
-  display: flex;
+  padding: 1rem 0;
+  display: grid;
   gap: 1rem;
-  flex-direction: column;
   align-items: center;
+  justify-items: center;
   justify-content: center;
 }
 
-.product-images p {
-  font-size: 1.2rem;
-  font-weight: 500;
-  justify-self: end;
+.product-images div p {
   text-transform: capitalize;
-  margin-bottom: -0.5rem;
   display: flex;
-  gap: 0.5rem;
+  gap: 2vw;
   align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+@media screen and (min-width: 900px) {
+  .product-images {
+    grid-template-columns: repeat(2, min-content);
+    gap: 7vw;
+    justify-items: center;
+  }
 }
 
 .product-images p img {
@@ -92,14 +110,13 @@ textarea::placeholder {
 }
 
 .product-images #main-image {
-  width: 100%;
   border-radius: 4px;
   object-fit: cover;
+  height: clamp(1rem, 75vh, 100vw);
 }
 
 .images {
   width: 100%;
-  height: clamp(100px, 30vw, 30vh);
   display: grid;
   gap: 0.25rem;
   grid-template-columns: repeat(4, 1fr);
@@ -115,8 +132,22 @@ textarea::placeholder {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  width: 100%;
+  width: 20vw;
+  height: 20vw;
   cursor: pointer;
+}
+
+@media screen and (min-width: 900px) {
+  .images {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .images label {
+    max-width: 150px;
+    max-height: 150px;
+  }
 }
 
 .images label:hover {

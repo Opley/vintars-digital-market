@@ -7,6 +7,11 @@
 #e9f5e7
 #0C3507
 */
+body {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #e9f5e7;
+}
 
 header {
   width: 100%;
@@ -53,14 +58,6 @@ main {
   }
 }
 
-.featuredProductTitle,
-.allProductsTitle {
-  font-size: clamp(1.2rem, 3vw, 2.4rem);
-  color: #464646;
-  text-transform: capitalize;
-  margin-bottom: 0.5rem;
-}
-
 .setOfProducts {
   display: flex;
   gap: 0.5rem;
@@ -73,64 +70,18 @@ main {
   object-fit: cover;
 }
 
-/* CATEGORIES */
-.categories {
-  margin-top: 5rem;
-  display: grid;
-  justify-content: center;
-  gap: 0.5rem;
-  grid-template-columns: repeat(2, 5rem);
-  text-align: center;
-}
-
-/* add a line through the categories */
-
-.categoriesTitle {
-  text-transform: capitalize;
-  grid-column: span 2;
-}
-
-.link {
-  text-decoration: none;
-}
-
-.link:hover {
-  color: #e9f5e7;
-  background-color: #464646;
-}
-
-.men,
-.women,
-.goods,
-.misc {
-  text-transform: capitalize;
-  padding: 1rem;
-  color: #e9f5e7;
-  background-color: #383838;
-}
-
-.men {
-  color: red;
-  border-top-left-radius: 4px;
-}
-
-.women {
-  border-top-right-radius: 4px;
-  color: pink;
-}
-
-.goods {
-  color: green;
-  border-bottom-left-radius: 4px;
-}
-.misc {
-  color: yellow;
-  border-bottom-right-radius: 4px;
-}
-
 /* All PRODUCTS */
 .allProductsContainer {
-  /* margin-top: 5rem; */
+  margin-top: 10vw;
+}
+
+.featuredProductTitle,
+.allProductsTitle {
+  font-size: clamp(1.2rem, 3vw, 2.4rem);
+  color: #464646;
+  text-transform: capitalize;
+  margin-bottom: 2.5vw;
+  opacity: 0.5;
 }
 
 .allProductsTitle {
@@ -141,12 +92,13 @@ main {
   display: grid;
   align-items: start;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 2vw;
   grid-template-columns: repeat(
     auto-fit,
     clamp(1rem, calc(50% - 0.35rem), 15rem)
   );
   grid-auto-rows: clamp(1rem, 60vw, 300px);
+  padding-bottom: 10vw;
 }
 
 .products {
@@ -234,7 +186,6 @@ footer .aboutParagraph {
 @media screen and (min-width: 600px) {
   footer {
     border-bottom: 25px solid #0c350754;
-    margin-top: 10rem;
     border-top-right-radius: 8px;
     border-top-left-radius: 8px;
     gap: 0 2.5rem;
