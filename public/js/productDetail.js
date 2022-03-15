@@ -85,7 +85,9 @@ window.onload = async () => {
   const productImages = document.querySelector(".product-images");
   const productImage = document.querySelector(".product-image img");
   console.log(productImage);
+
   productImages.addEventListener("click", (e) => {
+    if (e.target.tagName !== "IMG") return;
     productImage.src = `${e.target.src}`;
   });
 
