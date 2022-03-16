@@ -36,11 +36,8 @@ app.use("/login", loginRouter);
 app.use("/signup", signupRouter);
 app.use("/auth", authRouter);
 
-// app.use("/protected", protectedRouter);
-// app.use("/token", tokenRouter);
 app.use("/seller", sellerRouter);
 app.use("/add-a-product", addProductRouter);
-
 app.use("/product-detail", productDetailRouter);
 app.use("/unauthorize-access", unauthorizeAccessRouter);
 app.use("/database", databaseRouter);

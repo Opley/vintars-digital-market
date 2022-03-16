@@ -2,6 +2,7 @@ const productDetail = document.querySelector(".product-detail");
 
 // style="background-image: url()"
 const renderProductDetail = (data) => {
+  console.log(`<p>${data.detailedDes}</p>`);
   productDetail.innerHTML = `
     <div class="product-image">
       <img class="img" src="${data.imagePaths.find(
@@ -79,6 +80,9 @@ window.onload = async () => {
       location.href = "/";
     }, 3000);
   }
+
+  console.log(product.detailedDes);
+
   renderProductDetail(product);
 
   // must render product before retrieving element
