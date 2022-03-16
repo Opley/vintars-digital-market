@@ -124,7 +124,7 @@ body {
 .product-short-des {
   margin-top: 1.5rem;
   font-size: 1.4rem;
-  white-space: pre-wrap;
+  white-space: pre-line;
   opacity: 0.5;
 }
 
