@@ -13,11 +13,13 @@ fileUploads.forEach((fileUpload, index) =>
       //means user uploaded an image
       const fetchUrl = await fetch("/s3url");
       const url = await fetchUrl.json();
+
       await fetch(url, {
         method: "PUT",
         headers: new Headers({ "Content-Type": "multipart/form-data" }),
         body: file,
       });
+
       const imageUrl = url.split("?")[0];
       imagePaths[index] = imageUrl;
 

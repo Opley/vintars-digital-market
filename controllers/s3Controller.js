@@ -32,6 +32,7 @@ const generateUrl = async (req, res) => {
     Expires: 3000, //300ms
     ContentType: "image/jpeg",
   };
+
   const uploadUrl = await s3.getSignedUrlPromise("putObject", params);
   res.json(uploadUrl);
 };
