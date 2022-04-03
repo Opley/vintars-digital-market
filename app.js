@@ -23,6 +23,7 @@ const staticPath = path.join(__dirname, "/public");
 const app = express();
 
 //middlewares
+app.enable("trust proxy");
 app.use(express.static(staticPath));
 app.use(express.json());
 app.use((req, res, next) => {
