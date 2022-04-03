@@ -3,13 +3,17 @@ services:
   app:
     # container_name: vintars-digital-market
     restart: always
-    image: vintars-digital-market
-    build: .
+    image: opley/vintars-digital-market:1.0
     volumes:
       - ./:/home/vintars-digital-market
       - node_modules:/home/vintars-digital-market/node_modules
     environment:
-      - test=valueeeeeeeeeeeeeeeeeeeee
+      - DATABASE=${DATABASE}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+      - AWS_SECRET_KEY=${AWS_SECRET_KEY}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
 
   nginx:
     container_name: nginx
