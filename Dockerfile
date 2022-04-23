@@ -1,10 +1,10 @@
-FROM node:14.18
+FROM node:14.18.0
 
 WORKDIR /home/vintars-digital-market
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm install 
 
 COPY . .
 

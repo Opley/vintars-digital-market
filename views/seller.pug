@@ -1,0 +1,33 @@
+extends base
+
+block styles 
+    link(rel="stylesheet", href="../css/nav.css")
+    link(rel="stylesheet", href="../css/seller.css")
+
+block content  
+    img.loader(src="img/loader.gif")
+    .alert-box 
+        img.alert-img(src="img/error.png")
+        p.alert-msg 
+
+    .cover 
+        img(src="img/default.svg", alt="cover img")
+
+    main 
+        .add-a-product 
+            p Seller's Dashboard 
+            a.add-a-product-btn(href="/add-a-product") Add a product
+        
+        .allProductsContainer
+            h2.allProductsTitle All Products 
+            .allProductsBody     
+                each product in products 
+                    .products 
+                        a.detail(href=`/product-detail/${product._id}`) detail
+                        - const image = product.imagePaths.find(item => item !== null)
+                        img(src=image)
+    
+    <script type="module" src="../js/utils.js"></script>
+    
+    include _scripts
+

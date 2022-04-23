@@ -8,6 +8,7 @@ const staticPath = path.join(__dirname, "../public");
 
 // Route Handlers
 const getLoginPg = (req, res) => {
+  console.log(req.cookies);
   res.sendFile(path.join(staticPath, "/login.html"));
 };
 
@@ -21,7 +22,14 @@ const postLoginPg = catchAsync(async (req, res, next) => {
 
     if (user && (await bcrypt.compare(password, user.password))) {
       const token = signToken(user._id);
-      return res.json({ token, email: user.email });
+      res.cookie("jwt", token, {
+        httpOnly: true,
+      });
+      // return res.json({ token, email: user.email });
+      return res.status(200).json({
+        status: "success",
+        message: "user verified",
+      });
     } else {
       next(new AppError("Please enter a valid email or password", 401));
     }

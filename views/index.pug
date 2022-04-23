@@ -1,0 +1,43 @@
+extends base
+
+
+block styles
+    link(rel="stylesheet", href="css/index.css")
+    link(rel="stylesheet", href="css/nav.css")
+
+
+block content 
+    //- scripted
+    header
+
+    main 
+    .featuredProductContainer 
+        h2.featuredProductTitle featured products 
+        .featuredProducts
+            .setOfProducts 
+                img(src="img/card1.png" alt="card1") 
+                img(src="img/card2.png" alt="card1") 
+                img(src="img/card3.png" alt="card1") 
+
+            .setOfProducts 
+                img(src="img/card4.png" alt="card1") 
+                img(src="img/card5.png" alt="card1") 
+                img(src="img/card6.png" alt="card1") 
+
+    .allProductsContainer
+        h2.allProductsTitle All Products 
+        .allProductsBody     
+            each product in products 
+                .products 
+                    a.detail(href=`/product-detail/${product._id}`) detail
+                    - const image = product.imagePaths.find(item => item !== null)
+                    img(src=image)
+
+
+
+    include _footer 
+
+    include _scripts
+
+
+            

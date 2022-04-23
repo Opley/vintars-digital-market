@@ -62,7 +62,7 @@ signupBtn.addEventListener("click", async () => {
       return showAlert(newMsg);
     }
 
-    sessionStorage.user = JSON.stringify(data);
+    // sessionStorage.user = JSON.stringify(data);
     location.href = "/";
   }
 });

@@ -9,7 +9,7 @@ const router = express.Router();
 //prettier-ignore
 router
   .route("/")
-  .get( getSignupPg)
+  .get(getSignupPg)
   .post(postSignupPg);
 
 module.exports = router;

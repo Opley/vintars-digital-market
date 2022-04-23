@@ -1,0 +1,60 @@
+extends base
+
+block styles
+    link(rel="stylesheet", href="css/nav.css")
+    link(rel="stylesheet", href="css/utils.css")
+    link(rel="stylesheet", href="css/addProduct.css")
+
+block content 
+    img.loader(src="img/loader.gif", alt="")
+
+    .alert-box 
+        img.alert-img(src="img/error.png", alt="")
+        p.alert-msg
+
+
+    .cover 
+
+    .product-details 
+        input.name(type="text" placeholder="product name")
+        input.brief-des(type="text" placeholder="brief description")
+        textarea.detailed-des(id="product-des" placeholder="Detailed description")
+
+    .product-images     
+        img.product-image(id="main-image" src="img/noimg.png")
+
+        .div 
+            p upload images 
+                img(src="img/camera.png", alt="")
+            .images 
+                input.fileUpload(type="file", id="firstUpload")
+                label(for="firstUpload")
+
+                input.fileUpload(type="file", id="secondUpload")
+                label(for="secondUpload")
+
+                input.fileUpload(type="file", id="thirdUpload")
+                label(for="thirdUpload")
+
+                input.fileUpload(type="file", id="fourthUpload")
+                label(for="fourthUpload")                                
+
+    .sizes 
+        h2.sizes-title Sizes Available 
+        input.size-checkbox(type="checkbox" value="s")
+        input.size-checkbox(type="checkbox" value="m")
+        input.size-checkbox(type="checkbox" value="l")
+
+
+    .prices 
+        input.stocks(type="number" placeholder="Items in stock")
+        input.price(type="number" placeholder="price")
+
+    .btns 
+        button.draft.btn save draft 
+        button.add-product.btn add product
+
+
+    include _scripts
+    script(type="module" src="./js/utils.js")
+    script(type="module" src="./js/addProduct.js")

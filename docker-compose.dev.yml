@@ -1,0 +1,33 @@
+version: "3"
+services:
+  app:
+    # container_name: vintars-digital-market
+    restart: always
+    # image: opley/app-dev:2.0
+    build: .
+    volumes:
+      - node_modules:/home/vintars-digital-market/node_modules
+      - ./:/home/vintars-digital-market/
+    environment:
+      - NODE_ENV=development
+    #   - DATABASE=${DATABASE}
+    #   - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+    #   - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+    #   - AWS_SECRET_KEY=${AWS_SECRET_KEY}
+    #   - JWT_SECRET=${JWT_SECRET}
+    #   - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+    ports:
+      - 5000:5000
+    command: npm run dev
+
+  # mongo:
+  #   container_name: mongo
+  #   image: mongo
+  #   volumes:
+  #     - mongo-db:/data/db
+  #   environment:
+  #     - MONGO_INITDB_ROOT_USERNAME=admin
+  #     - MONGO_INITDB_ROOT_PASSWORD=password
+volumes:
+  #   # mongo-db:
+  node_modules:

@@ -1,10 +1,12 @@
 const navBar = document.querySelector(".navBar");
 
-// if log in, display name or loguout on nav
-const user = sessionStorage.user ? JSON.parse(sessionStorage.user) : null;
+const logout = async () => {
+  const fetchData = await fetch("/logout", {
+    method: "get",
+    headers: new Headers({ "Content-Type": "application/json" }),
+  });
 
-const logout = () => {
-  sessionStorage.clear();
+  const logout1 = await fetchData.json();
 };
 
 const clearScroll = () => {
@@ -71,9 +73,9 @@ const renderNavBar = () => {
     <li class="links"><a href="/">Home</a></li>
     <li class="links"><a href="/all-products">Products</a></li>
      ${
-       sessionStorage?.user
+       user
          ? `<li class="links"><a href="/seller" onclick="clearScroll()">Seller's Dashboard</a></li>
-            <li class="links"><a href="/login" onclick="logout()">Logout as (${user.email})</a></li>`
+            <li class="links"><a href="/logout">Logout as (${user[0].name})</a></li>`
          : `<li class="links"><a href="/seller" onclick="clearScroll()">Become A Seller</a></li>
             <li class="links"><a href="/login">Login</a></li>`
      }
@@ -85,7 +87,7 @@ const renderNavBar = () => {
     <a href="/"><li class="link">Home</li></a>
     <a href="/all-products"> <li class="link">Products</li></a>
     ${
-      sessionStorage.user
+      user
         ? `<li class="links"><a href="/seller">Seller's Dashboard</a></li><li class="links"><a href="/login" onclick="logout()">Logout</a></li>`
         : `<li class="links"><a href="/seller">Become A Seller</a></li><li class="links"><a href="/login">Login</a></li>`
     }

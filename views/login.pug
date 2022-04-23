@@ -1,0 +1,33 @@
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="../css/login.css")
+        title #{title}
+    body 
+        img.loader(src="img/loader.gif", alt="")
+        
+        .alert-box 
+            img.alert-img(src="img/error.png", alt="")
+            p.alert-msg 
+
+        section 
+            img(src="img/cover.png", alt="")
+
+        .login-form 
+            input(type="text", id="email", placeholder="email")
+            input(type="password", id="password", placeholder="password")
+            button.loginBtn Login
+
+        a(href="/signup") Don't have an account? 
+            span Sign up here!
+
+
+        //- <script defer type="module" src="../js/utils.js"></script>
+        //- <script defer type="module" src="../js/login.js"></script>
+
+        block scripts 
+            script(=defer src="./js/utils.js" type="module") 
+            script(=defer src="./js/login.js" type="module")
+

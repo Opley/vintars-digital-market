@@ -1,4 +1,3 @@
-// import { fetchedProduct1 } from "./seller.js";
 import { showAlert } from "./utils.js";
 
 const fileUploads = document.querySelectorAll(".fileUpload");
@@ -53,8 +52,8 @@ const getSizes = () => {
   });
 };
 
-const storedUser = JSON.parse(sessionStorage.user);
-const product = JSON.parse(localStorage.getItem("product"));
+// const storedUser = JSON.parse(sessionStorage.user);
+const product = JSON.parse(localStorage.getItem("product") || null);
 
 const postProductDatailDB = async (url) => {
   getSizes();
@@ -63,8 +62,8 @@ const postProductDatailDB = async (url) => {
     headers: new Headers({ "Content-Type": "application/json" }),
     body: JSON.stringify({
       id: product?._id || null,
-      email: storedUser.email,
-      token: storedUser.token,
+      // email: storedUser.email,
+      // token: storedUser.token,
       name: name.value,
       briefDes: briefDes.value,
       detailedDes: detailedDes.value,

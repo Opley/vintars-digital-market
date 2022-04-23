@@ -1,6 +1,6 @@
 const express = require("express");
-const { getSellerPg } = require("../controllers/sellerController");
-const { sellerCheckIfLoggedIn } = require("../utils/utils");
+const { getSellerPg } = require("../../controllers/sellerController");
+const { sellerCheckIfLoggedIn } = require("../../utils/utils");
 
 const router = express.Router();
 

@@ -31,6 +31,9 @@ const postSignupPg = catchAsync(async (req, res, next) => {
   console.log(checkUser);
   const user = await Users.create(req.body);
   const token = signToken(user._id);
+  res.cookie("jwt", token, {
+    httpOnly: true,
+  });
 
   return res.json({ token, email: user.email });
 });
