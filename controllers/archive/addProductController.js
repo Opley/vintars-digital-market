@@ -1,7 +1,7 @@
 const path = require("path");
-const { Products, Users } = require("../public/js/userSchema");
+const { Products, Users } = require("../../public/js/userSchema");
 const { verifyToken } = require("./authController");
-const catchAsync = require("../utils/catchAsync");
+const catchAsync = require("../../utils/catchAsync");
 const staticPath = path.join(__dirname, "../public");
 
 const getAddProductPg = (req, res) => {

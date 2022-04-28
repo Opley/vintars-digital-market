@@ -1,5 +1,5 @@
 const path = require("path");
-const { Products } = require("../public/js/userSchema");
+const { Products } = require("../../public/js/userSchema");
 
 const staticPath = path.join(__dirname, "../public");
 

@@ -25,12 +25,13 @@ block content
                 img(src="img/card6.png" alt="card1") 
 
     .allProductsContainer
-        h2.allProductsTitle All Products 
+        h2.allProductsTitle All Products
         .allProductsBody     
             each product in products 
                 .products 
                     a.detail(href=`/product-detail/${product._id}`) detail
                     - const image = product.imagePaths.find(item => item !== null)
+                    - console.log(image)
                     img(src=image)
 
 

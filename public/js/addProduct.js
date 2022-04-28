@@ -1,8 +1,20 @@
 import { showAlert } from "./utils.js";
 
 const fileUploads = document.querySelectorAll(".fileUpload");
+const labels = document.querySelectorAll(".label");
 let imagePaths = []; // will store all uploaded imags paths;
 let sizes = [];
+
+if (product) {
+  labels.forEach((label) => {
+    const imgPath = label.style.backgroundImage
+      ? label.style.backgroundImage
+          .match(/(?:"[^"]*"|^[^"]*$)/)[0]
+          .replace(/"/g, "")
+      : null;
+    imagePaths.push(imgPath);
+  });
+}
 
 fileUploads.forEach((fileUpload, index) =>
   fileUpload.addEventListener("change", async () => {
@@ -10,6 +22,7 @@ fileUploads.forEach((fileUpload, index) =>
 
     if (file.type.includes("image")) {
       //means user uploaded an image
+      console.log("test");
       const fetchUrl = await fetch("/s3url");
       const url = await fetchUrl.json();
 
@@ -52,18 +65,13 @@ const getSizes = () => {
   });
 };
 
-// const storedUser = JSON.parse(sessionStorage.user);
-const product = JSON.parse(localStorage.getItem("product") || null);
-
-const postProductDatailDB = async (url) => {
+addProduct.addEventListener("click", async (e) => {
   getSizes();
-  const fetchDatabase = await fetch(url, {
+  const fetchDatabase = await fetch("/add-a-product", {
     method: "post",
     headers: new Headers({ "Content-Type": "application/json" }),
     body: JSON.stringify({
       id: product?._id || null,
-      // email: storedUser.email,
-      // token: storedUser.token,
       name: name.value,
       briefDes: briefDes.value,
       detailedDes: detailedDes.value,
@@ -74,6 +82,7 @@ const postProductDatailDB = async (url) => {
     }),
   });
   const fetchProduct = await fetchDatabase.json();
+  console.log(fetchDatabase);
 
   if (fetchProduct.status === "error") {
     const msg = fetchProduct.message.match(/\Please.*?\!/gm);
@@ -83,40 +92,4 @@ const postProductDatailDB = async (url) => {
     localStorage.removeItem("product");
     location.href = "/seller";
   }
-};
-
-addProduct.addEventListener("click", async (e) => {
-  if (!product) {
-    postProductDatailDB("/add-a-product");
-  } else {
-    // validate user owns the product
-    postProductDatailDB("/add-a-product/update-a-product");
-  }
 });
-
-window.onload = () => {
-  if (!product) return;
-
-  //prettier-ignore
-  name.value = product.name,
-  briefDes.value = product.briefDes,
-  detailedDes.value = product.detailedDes,
-  stocks.value = product.stocks;
-  price.value = product.price;
-  imagePaths = product.imagePaths;
-  sizes = product.sizes;
-
-  product.sizes.forEach((size) => {
-    const [input] = document.querySelectorAll(`input[value=${size}]`);
-    input.checked = true;
-  });
-
-  let productImage = document.querySelector(".product-image");
-  productImage.src = product.imagePaths.find((el) => el !== null);
-
-  fileUploads.forEach((fileUpload, i) => {
-    let label = document.querySelector(`label[for=${fileUpload.id}]`);
-    if (!product.imagePaths[i]) return;
-    label.style.backgroundImage = `url(${product.imagePaths[i]})`;
-  });
-};

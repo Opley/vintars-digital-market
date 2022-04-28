@@ -1,8 +1,8 @@
 const path = require("path");
 const { signToken } = require("./authController");
-const { Users } = require("../public/js/userSchema");
-const catchAsync = require("../utils/catchAsync");
-const AppError = require("../utils/appError");
+const { Users } = require("../../public/js/userSchema");
+const catchAsync = require("../../utils/catchAsync");
+const AppError = require("../../utils/appError");
 
 const staticPath = path.join(__dirname, "../public");
 

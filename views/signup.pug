@@ -1,0 +1,46 @@
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="../css/login.css")
+        link(rel="stylesheet", href="../css/signup.css")
+
+        title #{title}
+    body 
+        img.loader(src="img/loader.gif", alt="")
+        
+        .alert-box 
+            img.alert-img(src="img/error.png", alt="")
+            p.alert-msg 
+
+        section 
+            img(src="img/cover.png", alt="")
+
+        .login-form 
+            input(type="text" id="name" placeholder="Enter your name")
+            input(type="text" id="email" placeholder="email")
+            input(type="tel" id="phone" placeholder="Phone Number (ex: 946-123-4567")
+            input(type="password" id="password" placeholder="Password")
+            input(type="password" id="confirmPassword" placeholder="Confirm Password")
+            button.signupBtn Signup
+
+            a(href="/login") Already have an account?
+                span Login here!  
+
+
+
+            <script type="module" src="../js/utils.js"></script>
+            <script type="module" src="../js/signup.js"></script>
+
+    //-              <input
+    //-     id="phone"
+    //-     type="tel"
+    //-     placeholder="Phone Number (ex: 946-123-4567)"
+    //-   />
+    //-   <input id="password" type="password" placeholder="Password" />
+    //-   <input
+    //-     id="confirmPassword"
+    //-     type="password"
+    //-     placeholder="Confirm Password"
+    //-   />

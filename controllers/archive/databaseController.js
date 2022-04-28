@@ -1,4 +1,4 @@
-const { Products } = require("../public/js/userSchema");
+const { Products } = require("../../public/js/userSchema");
 
 const getProductsFromDB = async (req, res, next) => {
   if (!req.headers.authorization) return next();

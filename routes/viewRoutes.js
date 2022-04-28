@@ -11,13 +11,23 @@ router
   .route("/login")
   .get(authController.isLoggedIn, viewsController.getLoginPg)
   .post(authController.userLogin)
-// router.get("/login", authController.isLoggedIn, viewsController.getLoginPg);
-// router.post("/login", authController.userLogin);
+
+//prettier-ignore
+router
+  .route("/signup")
+  .get(authController.isLoggedIn, viewsController.getSignupPg)
+  .post(authController.userSignup)
 
 //prettier-ignore
 router.get( "/logout", authController.logout, viewsController.getHomePg)
 
-router.get("/seller", authController.isLoggedIn, viewsController.getSellersPg);
+router.get(
+  "/seller",
+  authController.isLoggedIn,
+  authController.isAuth,
+  viewsController.getSellersPg
+);
+
 router.get(
   "/product-detail/:id",
   authController.isLoggedIn,
@@ -27,27 +37,39 @@ router.get(
 // prettier-ignore
 router
   .route("/add-a-product")
-  .get(authController.isLoggedIn, viewsController.getAddProductPg)
-  .post(viewsController.postProductDB)
+  .get(authController.isLoggedIn, authController.isAuth,  viewsController.getAddProductPg)
+  .post(authController.isLoggedIn, viewsController.postProductDB)
 
 // prettier-ignore
 router
-  .route("update-a-product")
+  .route("/edit-a-product/:id")
+  .get(authController.isAuth, authController.isOwner, viewsController.getAddProductPg)
+
+// prettier-ignore
+router
+  .route("/update-a-product")
   .post(viewsController.getHomePg);
 
-//   .route("add-a-product/")
-// router.get(
-//   "/add-a-product",
-//   authController.isLoggedIn,
-//   viewsController.getAddProductPg
-// );
-// router.post("/add-a-product", viewsController.postProductDB);
-// router.post("/add-a-product/update-a-product", viewsController.getHomePg);
+// prettier-ignore
+router
+.route("/delete-a-product")
+.post(viewsController.deleteProduct)
 
 router.get(
   "/all-products",
   authController.isLoggedIn,
   viewsController.getAllProductsPg
 );
+
+// prettier-ignore
+router
+  .route('/user')
+  .get()
+  .post(viewsController.getUser)
+
+// prettier-ignore
+router
+  .route("/*")
+  .get(authController.isLoggedIn, viewsController.get404Pg)
 
 module.exports = router;

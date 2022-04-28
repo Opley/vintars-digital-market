@@ -85,6 +85,11 @@ const productSchema = new mongoose.Schema({
   },
 });
 
+productSchema.pre("findOneAndUpdate", function (next) {
+  this.options.runValidators = true;
+  next();
+});
+
 const Products = mongoose.model("products", productSchema);
 
 module.exports = { Users, Products };
