@@ -7,3 +7,8 @@ exports.getUser = async (userID) => {
 
   return user;
 };
+
+exports.getUserByEmail = async (email) => {
+  const user = await Users.findOne({ email });
+  return user;
+};

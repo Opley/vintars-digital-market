@@ -76,7 +76,6 @@ const productSchema = new mongoose.Schema({
       message: "Please upload at least one image of your product!",
     },
   },
-
   sizes: Array,
   stocks: Number,
   price: {
@@ -89,6 +88,17 @@ productSchema.pre("findOneAndUpdate", function (next) {
   this.options.runValidators = true;
   next();
 });
+
+// productSchema.post("save", function (next) {
+//   console.log("Schema.post operation🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️");
+//   console.log(this);
+//   // this.tempImagePaths.forEach(path => {
+//   //   const test = await fetch(s3uploadPaths[i], {
+//   //     method: "PUT",
+//   //     headers: new Headers({ "Content-Type": "multipart/form-data" }),
+//   //     body: file,
+//   //   });
+// });
 
 const Products = mongoose.model("products", productSchema);
 

@@ -199,7 +199,7 @@ body {
 .stock-and-price p span {
   font-size: 1.8rem;
   font-weight: 500;
-  margin-left: 0.5rem;
+  /* margin-left: 0.5rem; */
 }
 
 .btns {

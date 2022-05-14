@@ -29,19 +29,19 @@ block content
                 img(src="/img/camera.png", alt="")
             .images 
                 - url = product?.imagePaths[0] ? `background-image:url(${product.imagePaths[0]})` : null            
-                input.fileUpload(type="file", id="firstUpload")
+                input.fileUpload(type="file", id="firstUpload" )
                 label.label(style=url for="firstUpload")
 
                 - url = product?.imagePaths[1] ? `background-image:url(${product.imagePaths[1]})` : null            
-                input.fileUpload(type="file", id="secondUpload")
+                input.fileUpload(type="file", id="secondUpload"  )
                 label.label(style=url for="secondUpload" )
 
                 - url = product?.imagePaths[2] ? `background-image:url(${product.imagePaths[2]})` : null
-                input.fileUpload(type="file", id="thirdUpload" )
+                input.fileUpload(type="file", id="thirdUpload"  )
                 label.label(style=url for="thirdUpload" )
 
                 - url = product?.imagePaths[3] ? `background-image:url(${product.imagePaths[3]})` : null
-                input.fileUpload(type="file", id="fourthUpload") 
+                input.fileUpload(type="file", id="fourthUpload" ) 
                 label.label(style=url for="fourthUpload" )                                
 
     .sizes 

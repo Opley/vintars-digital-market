@@ -16,9 +16,16 @@
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "express-restify-mongoose": "^6.1.2",
+    "form-data": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.2",
+    "multer": "^1.4.4",
+    "multer-s3-transform": "^2.10.3",
+    "node-fetch": "^2.6.7",
+    "piexifjs": "^1.0.6",
     "pug": "^3.0.2",
+    "sharp": "^0.30.4",
     "validator": "^13.7.0"
   },
   "devDependencies": {

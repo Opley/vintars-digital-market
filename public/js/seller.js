@@ -3,8 +3,13 @@ const edits = document.querySelectorAll(".edit");
 const trash = document.querySelectorAll(".trash");
 // const elements = [edits, trash];
 
+let count = 0;
+
 trash.forEach((el) =>
   el.addEventListener("click", async (e) => {
+    count++;
+    console.log(count);
+    if (count > 1) return;
     const productID = el.dataset.product_id;
 
     // delete product with the above product id
@@ -16,6 +21,6 @@ trash.forEach((el) =>
 
     const result = await res.json();
     console.log(result);
-    if (result.status === "success") window.location.reload();
+    if (result.status === "success") window.location.reload(true);
   })
 );

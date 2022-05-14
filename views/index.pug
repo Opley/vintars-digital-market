@@ -10,6 +10,8 @@ block content
     //- scripted
     header
 
+    include _scripts
+
     main 
     .featuredProductContainer 
         h2.featuredProductTitle featured products 
@@ -31,14 +33,12 @@ block content
                 .products 
                     a.detail(href=`/product-detail/${product._id}`) detail
                     - const image = product.imagePaths.find(item => item !== null)
-                    - console.log(image)
                     img(src=image)
 
 
 
     include _footer 
 
-    include _scripts
 
 
             

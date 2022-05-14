@@ -100,24 +100,7 @@ const email = document.querySelector(".email");
 const phone = document.querySelector(".phone");
 const addToCartBtn = document.querySelector(".add-to-cart");
 
-addToCartBtn.addEventListener("click", async () => {
-  const url = window.location.pathname;
-  const productID = url.split("/")[2];
-
-  const fetchUserDB = await fetch("/user", {
-    method: "post",
-    headers: new Headers({ "Content-Type": "application/json" }),
-    body: JSON.stringify({ productID }),
-  });
-
-  const user = await fetchUserDB.json();
-  console.log(user);
-
-  name.innerHTML = `Name: ${user.name}`;
-  email.innerHTML = `Email: ${user.email}`;
-  phone.innerHTML = `Phone: ${user.phone}`;
-  phone.href = `tel:${user.phone}`;
-
+addToCartBtn.addEventListener("click", () => {
   contactInfo.classList.toggle("hide-contact-info");
 });
 

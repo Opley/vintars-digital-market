@@ -1,48 +1,36 @@
 import { showAlert } from "./utils.js";
+const loader = document.querySelector(".loader");
 
 const fileUploads = document.querySelectorAll(".fileUpload");
 const labels = document.querySelectorAll(".label");
 let imagePaths = []; // will store all uploaded imags paths;
+let s3uploadPaths = [];
+// let files = [];
 let sizes = [];
 
-if (product) {
-  labels.forEach((label) => {
-    const imgPath = label.style.backgroundImage
-      ? label.style.backgroundImage
-          .match(/(?:"[^"]*"|^[^"]*$)/)[0]
-          .replace(/"/g, "")
-      : null;
-    imagePaths.push(imgPath);
-  });
-}
-
+let form = new FormData();
+const objectsToBeDeleted = [];
+const imagesToBeDeleted = [];
 fileUploads.forEach((fileUpload, index) =>
-  fileUpload.addEventListener("change", async () => {
+  fileUpload.addEventListener("change", async (e) => {
     const file = fileUpload.files[0];
+    if (!file.type.includes("image")) return showAlert("Upload image only!");
 
-    if (file.type.includes("image")) {
-      //means user uploaded an image
-      console.log("test");
-      const fetchUrl = await fetch("/s3url");
-      const url = await fetchUrl.json();
-
-      await fetch(url, {
-        method: "PUT",
-        headers: new Headers({ "Content-Type": "multipart/form-data" }),
-        body: file,
-      });
-
-      const imageUrl = url.split("?")[0];
-      imagePaths[index] = imageUrl;
-
-      let label = document.querySelector(`label[for=${fileUpload.id}]`);
-      label.style.backgroundImage = `url(${imageUrl})`;
-
-      let productImage = document.querySelector(".product-image");
-      productImage.src = imageUrl;
-    } else {
-      showAlert("upload image only");
+    console.log(e.target.nextSibling.style.backgroundImage);
+    //prettier-ignore
+    if (e.target.nextSibling.style.backgroundImage.startsWith(`url("https://vintar-digital-market.s3.eu-central-1.amazonaws.com`)) {
+      console.log("image deleted in s3 bucket");
+      objectsToBeDeleted.push(e.target.nextSibling.style.backgroundImage)
+      imagesToBeDeleted.push(e.target.nextSibling.style.backgroundImage)
     }
+
+    //Set background image with the file's blob
+    const bg = URL.createObjectURL(file);
+    let label = document.querySelector(`label[for=${fileUpload.id}]`);
+    label.style.backgroundImage = `url(${bg}`;
+
+    let productImage = document.querySelector(".product-image");
+    productImage.src = bg;
   })
 );
 
@@ -64,14 +52,41 @@ const getSizes = () => {
     }
   });
 };
+// let product;
+//   // if there is a product (when editing) then
+//   // push the img paths to imagePaths variable
+//   if (product) {
+//     labels.forEach((label) => {
+//       if (!label.style.backgroundImage) return;
+//       const imgPath = label.style.backgroundImage
+//         ? label.style.backgroundImage
+//             .match(/(?:"[^"]*"|^[^"]*$)/)[0]
+//             .replace(/"/g, "")
+//         : undefined;
+//       imagePaths.push(imgPath);
+//     });
+//   }
 
 addProduct.addEventListener("click", async (e) => {
+  console.log(e.target.disabled);
+  e.target.disabled = true;
+  loader.style.display = "block";
   getSizes();
-  const fetchDatabase = await fetch("/add-a-product", {
-    method: "post",
-    headers: new Headers({ "Content-Type": "application/json" }),
-    body: JSON.stringify({
-      id: product?._id || null,
+  const productId = window.location.pathname.split("/")[2] || null;
+
+  labels.forEach((label) => {
+    //prettier-ignore
+    if(label.style.backgroundImage.startsWith(`url("https://vintar-digital-market.s3.eu-central-1.amazonaws.com`)){
+      const imgPath = label.style.backgroundImage.match(/(?:"[^"]*"|^[^"]*$)/)[0].replace(/"/g, "")
+      if(imagePaths.includes(imgPath)) return;
+      imagePaths.push(imgPath)
+    }
+  });
+
+  form.set(
+    "product",
+    JSON.stringify({
+      id: productId,
       name: name.value,
       briefDes: briefDes.value,
       detailedDes: detailedDes.value,
@@ -79,17 +94,52 @@ addProduct.addEventListener("click", async (e) => {
       sizes,
       stocks: stocks.value,
       price: price.value,
-    }),
-  });
-  const fetchProduct = await fetchDatabase.json();
-  console.log(fetchDatabase);
+    })
+  );
 
-  if (fetchProduct.status === "error") {
-    const msg = fetchProduct.message.match(/\Please.*?\!/gm);
-    const newMsg = msg.join("\n");
-    showAlert(newMsg);
-  } else {
-    localStorage.removeItem("product");
-    location.href = "/seller";
+  // 1.) get all files and append to form.
+
+  const files = [];
+  fileUploads.forEach((fileUpload) => {
+    const file = fileUpload.files[0];
+    if (!file || !file.type.includes("image")) return;
+    return files.push(file);
+  });
+
+  form.delete("files");
+  files.forEach((file) => {
+    // if (form.getAll("files").includes(file)) return;
+    return form.append("files", file);
+  });
+
+  console.log(form.getAll("files"), "being uploaded...");
+  const data = await fetch("/s3url", {
+    method: "POST",
+    body: form,
+  });
+
+  const datas = await data.json();
+  if (datas.status === "failed") {
+    e.target.disabled = false;
+    return showAlert(datas.message);
   }
+
+  //===============================================
+  // delete amazon bg image
+  objectsToBeDeleted.forEach((object) => {
+    fetch("/s3url/deleteObject", {
+      method: "POST",
+      headers: new Headers({ "Content-Type": "application/json" }),
+      body: JSON.stringify({
+        object,
+      }),
+    });
+  });
+  //===============================================
+
+  console.log("change location to /seller");
+  return (location.href = "/seller");
+
+  //   const msg = fetchProduct.message.match(/\Please.*?\!/gm);
+  //   const newMsg = msg.join("\n");
 });

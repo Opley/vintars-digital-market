@@ -1,11 +1,11 @@
-const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const Product = require("../models/productModel");
 const productModel = require("../models/productModel");
 const { Products } = require("../public/js/userSchema");
 const catchAsync = require("../utils/catchAsync");
+const AppError = require("../utils/appError");
 
-exports.getHomePg = catchAsync(async (req, res) => {
+exports.getHomePg = catchAsync(async (req, res, next) => {
   const products = await Products.find();
 
   res.status(200).render("index", {
@@ -24,8 +24,8 @@ exports.getSignupPg = (req, res) => {
 };
 
 exports.getSellersPg = async (req, res, next) => {
-  const [user] = req.user;
-  const products = await productModel.getOwnedProducts(user.email);
+  const products = await productModel.getOwnedProducts(req.user.email);
+  console.log(products);
   res.status(200).render("seller", {
     title: `VDM | Seller's Page`,
     products,
@@ -42,21 +42,23 @@ exports.getAllProductsPg = async (req, res, next) => {
   });
 };
 
-exports.getProductDetailPg = async (req, res, next) => {
+exports.getProductDetailPg = catchAsync(async (req, res, next) => {
   const id = req.params.id;
   const product = await Products.findOne({ _id: id });
+  const owner = await User.getUserByEmail(product.email);
+
   res.status(200).render("productDetail", {
     title: `VDM | Product Detail`,
     product,
-    user: req.user || null,
+    owner,
+    user: req.user,
   });
-};
+});
 
 exports.getAddProductPg = async (req, res, next) => {
   let product;
 
   if (req.params.id) {
-    console.log("🙌🙌🙌🙌🙌🙌🙌🙌🙌🙌");
     product = await Products.findOne({ _id: req.params.id });
   }
 
@@ -67,26 +69,27 @@ exports.getAddProductPg = async (req, res, next) => {
   });
 };
 
-exports.postProductDB = catchAsync(async (req, res) => {
-  const [user] = req.user;
+exports.postProductDB = catchAsync(async (req, res, next) => {
+  const user = req.user;
   req.body.email = user.email;
   const product = await Product.addProduct(req.body);
   res.json(product);
 });
 
-exports.deleteProduct = catchAsync(async (req, res) => {
+exports.deleteProduct = catchAsync(async (req, res, next) => {
   const { productID } = req.body;
-  const product = await productModel.deleteProduct(productID);
+  const product = await Product.getProduct(productID);
+  await productModel.deleteProduct(productID);
+  if (!product) return next();
 
-  return res
-    .status(200)
-    .json({ status: "success", message: "product has been deleted!" });
+  req.product = product;
+
+  return next();
 });
 
 exports.getUser = catchAsync(async (req, res) => {
   const { productID } = req.body;
   const user = await User.getUser(productID);
-  console.log(user);
 
   res.status(200).json(user);
 });

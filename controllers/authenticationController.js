@@ -1,7 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { promisify } = require("util");
-const { Users, Products } = require("../public/js/userSchema");
+const { Users } = require("../public/js/userSchema");
 const productModel = require("../models/productModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
@@ -18,57 +17,67 @@ const verifyToken = (token) => {
   return decoded;
 };
 
-exports.isLoggedIn = async (req, res, next) => {
-  console.log("isLoggedIn");
+exports.isLoggedIn = catchAsync(async (req, res, next) => {
+  console.log("===================isLoggedIn====================");
 
   // 1) check if cookie exist
   if (!req.cookies.jwt) return next();
 
-  // 2) verify if token is NOT expired or IS valid (try,catch locally)
+  // 2) verify if token is NOT expired or IS valid (try,catch locally because it's harder to route to next() from errorController)
   try {
     const decoded = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET);
 
     // 3) Check if user still exist in DB
-    const user = await Users.find({ _id: decoded.id });
+    const user = await Users.findOne({ _id: decoded.id });
     if (!user) return next();
     req.user = user;
 
     if (req.originalUrl === "/login" || req.originalUrl === "/signup") {
-      return res.redirect("/");
+      return next(
+        new AppError("USER_ALREADY_LOGGED_IN", "User is already logged in", 403)
+      );
     }
+
     return next();
   } catch (err) {
     return next();
   }
 
   // 4) Check if user has not changed password since issuance of token
+});
+
+const EMPTY_COOKIE_ERROR = () => {
+  return new AppError("EMPTY_COOKIE_ERROR", "JWT token doesn't exist", 403);
 };
 
-exports.isAuth = async (req, res, next) => {
-  console.log("isAuth");
+const USER_UNDEFINED_ERROR = () => {
+  return new AppError(
+    "USER_UNDEFINED",
+    "User no longer exist in the database",
+    404
+  );
+};
+
+exports.isAuth = catchAsync(async (req, res, next) => {
+  console.log("====================isAuth====================");
   // 1) check if cookie exist
-  if (!req.cookies.jwt) return res.redirect("/unauthorize-access");
+  if (!req.cookies.jwt) return next(EMPTY_COOKIE_ERROR());
 
-  // 2) verify if token is NOT expired or IS valid (try,catch locally)
-  try {
-    const decoded = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET);
+  // 2) verify if token is NOT expired or IS valid (catch the error globally)
+  const decoded = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET);
 
-    // 3) Check if user still exist in DB
-
-    const user = await Users.find({ _id: decoded.id });
-    if (!user) return res.redirect("/unauthorize-access");
-    req.user = user;
-  } catch (err) {
-    return res.redirect("/unauthorize-access");
-  }
+  // 3) Check if user still exist in DB
+  const user = await Users.findOne({ _id: decoded.id });
+  if (!user) return next(USER_UNDEFINED_ERROR());
+  req.user = user;
 
   // 4) Check if user has not changed password since issuance of token
   return next();
-};
+});
 
 exports.isOwner = async (req, res, next) => {
-  console.log("isOwner");
-  const [user] = req.user;
+  console.log("====================isOwner====================");
+  const user = req.user;
   const result = await productModel.validateOwner(req.params.id, user.email);
   if (!result) return res.redirect("/unauthorize-access");
   next();
@@ -86,7 +95,9 @@ exports.userLogin = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    next(new AppError("Please provide a username or password", 401));
+    next(
+      new AppError("LOGIN_ERROR", "Please provide a username or password", 401)
+    );
   } else {
     const user = await Users.findOne({ email }).select("+password");
 
@@ -99,18 +110,24 @@ exports.userLogin = async (req, res, next) => {
         .status(200)
         .json({ status: "success", message: "user authenticated" });
     } else {
-      next(new AppError("Please enter a valid email or password", 401));
+      next(
+        new AppError(
+          "LOGIN_ERROR",
+          "Please enter a valid email or password",
+          401
+        )
+      );
     }
   }
 };
 
 exports.userSignup = catchAsync(async (req, res, next) => {
   const { email } = req.body;
-  console.log(email);
   const checkUser = await Users.findOne({ email });
   if (checkUser) {
     return next(
       new AppError(
+        "SIGNUP_ERROR",
         "Please use a different email. That Email already Exist!",
         500
       )
@@ -118,11 +135,10 @@ exports.userSignup = catchAsync(async (req, res, next) => {
   }
 
   const user = await Users.create(req.body);
-  console.log(req.body);
   const token = signToken(user._id);
   res.cookie("jwt", token, {
     httpOnly: true,
   });
 
-  return res.json({ token, email: user.email });
+  res.status(200).json({ status: "success" });
 });

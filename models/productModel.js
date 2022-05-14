@@ -1,9 +1,9 @@
 const { Products } = require("../public/js/userSchema");
+const catchAsync = require("../utils/catchAsync");
 
 exports.addProduct = async (product1) => {
   let product;
   if (product1.id) {
-    console.log(product1);
     product = await Products.findOneAndUpdate(
       { _id: product1.id },
       {
@@ -20,9 +20,10 @@ exports.addProduct = async (product1) => {
       }
     );
   } else {
+    console.log("creating a product...");
     product = await Products.create(product1);
+    return product;
   }
-  return product;
 };
 
 exports.deleteProduct = async (productID) => {
@@ -31,13 +32,12 @@ exports.deleteProduct = async (productID) => {
 };
 
 exports.getProduct = async (productID) => {
-  const product = await Products.findOne({ productID });
-
+  const product = await Products.findOne({ _id: productID });
   return product;
 };
 
 exports.editProduct = async (productID) => {
-  const product = await Products.findOne({ productID });
+  const product = await Products.findOne({ _id: productID });
   return product;
 };
 

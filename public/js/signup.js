@@ -28,7 +28,8 @@ signupBtn.addEventListener("click", async () => {
       }),
     });
 
-    const data = await fetchData.json();
+    const data = await fetchData?.json();
+    console.log(data);
     if (data.status === "error") {
       if (data.code === 11000) {
         return showAlert("The email address already exist");
@@ -38,7 +39,6 @@ signupBtn.addEventListener("click", async () => {
       return showAlert(newMsg);
     }
 
-    // sessionStorage.user = JSON.stringify(data);
-    location.href = "/";
+    window.location = "/";
   }
 });

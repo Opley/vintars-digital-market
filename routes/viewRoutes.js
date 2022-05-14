@@ -1,44 +1,48 @@
 const express = require("express");
+const restify = require("express-restify-mongoose");
+const { Products } = require("../public/js/userSchema");
 const viewsController = require("../controllers/viewsController");
 const authController = require("../controllers/authenticationController");
+const { deleteImg } = require("../controllers/s3Controller.js");
 
 const router = express.Router();
+restify.serve(router, Products, {
+  postCreate: function (req, res, next) {
+    const result = req.erm.result;
 
-router.get("/", authController.isLoggedIn, viewsController.getHomePg);
+    result.tempFilePath = ["test", "test2"];
+    next();
+  },
+});
+
+router.use(authController.isLoggedIn);
+
+router.get("/", viewsController.getHomePg);
 
 //prettier-ignore
 router
   .route("/login")
-  .get(authController.isLoggedIn, viewsController.getLoginPg)
+  .get(viewsController.getLoginPg)
   .post(authController.userLogin)
 
 //prettier-ignore
 router
   .route("/signup")
-  .get(authController.isLoggedIn, viewsController.getSignupPg)
+  .get(viewsController.getSignupPg)
   .post(authController.userSignup)
 
 //prettier-ignore
 router.get( "/logout", authController.logout, viewsController.getHomePg)
 
-router.get(
-  "/seller",
-  authController.isLoggedIn,
-  authController.isAuth,
-  viewsController.getSellersPg
-);
+router.get("/seller", authController.isAuth, viewsController.getSellersPg);
 
-router.get(
-  "/product-detail/:id",
-  authController.isLoggedIn,
-  viewsController.getProductDetailPg
-);
+router.get("/product-detail/:id", viewsController.getProductDetailPg);
 
 // prettier-ignore
 router
   .route("/add-a-product")
-  .get(authController.isLoggedIn, authController.isAuth,  viewsController.getAddProductPg)
-  .post(authController.isLoggedIn, viewsController.postProductDB)
+  .get(authController.isAuth,  viewsController.getAddProductPg)
+  .post(viewsController.postProductDB)
 
 // prettier-ignore
 router
@@ -53,13 +57,9 @@ router
 // prettier-ignore
 router
 .route("/delete-a-product")
-.post(viewsController.deleteProduct)
+.post( viewsController.deleteProduct, deleteImg)
 
-router.get(
-  "/all-products",
-  authController.isLoggedIn,
-  viewsController.getAllProductsPg
-);
+router.get("/all-products", viewsController.getAllProductsPg);
 
 // prettier-ignore
 router
@@ -70,6 +70,6 @@ router
 // prettier-ignore
 router
   .route("/*")
-  .get(authController.isLoggedIn, viewsController.get404Pg)
+  .get(viewsController.get404Pg)
 
 module.exports = router;
