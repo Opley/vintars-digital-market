@@ -67,10 +67,38 @@ const getSizes = () => {
 //     });
 //   }
 
+const formValidation = (e) => {
+  //prettier-ignore
+  if (!name.value || !briefDes.value || !detailedDes.value  || !price.value){
+    e.target.disabled = false;
+    return showAlert("Please fill out all the requireds..front end");
+  }
+  return true;
+};
+
+const imageValidation = (e, files) => {
+  if (!files.length >= 1) {
+    e.target.disabled = false;
+    return showAlert("Please upload an image..front end");
+  }
+  return true;
+};
+
+//=================SUBMIT Btn
 addProduct.addEventListener("click", async (e) => {
-  console.log(e.target.disabled);
-  e.target.disabled = true;
+  e.target.disabled = true; // prevents from being submitted 2x
   loader.style.display = "block";
+  if (!formValidation(e)) return;
+
+  const files = [];
+  fileUploads.forEach((fileUpload) => {
+    const file = fileUpload.files[0];
+    if (!file || !file.type.includes("image")) return;
+    return files.push(file);
+  });
+
+  if (!imageValidation(e, files)) return;
+
   getSizes();
   const productId = window.location.pathname.split("/")[2] || null;
 
@@ -98,13 +126,6 @@ addProduct.addEventListener("click", async (e) => {
   );
 
   // 1.) get all files and append to form.
-
-  const files = [];
-  fileUploads.forEach((fileUpload) => {
-    const file = fileUpload.files[0];
-    if (!file || !file.type.includes("image")) return;
-    return files.push(file);
-  });
 
   form.delete("files");
   files.forEach((file) => {
