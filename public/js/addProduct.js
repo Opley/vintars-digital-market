@@ -71,15 +71,16 @@ const formValidation = (e) => {
   //prettier-ignore
   if (!name.value || !briefDes.value || !detailedDes.value  || !price.value){
     e.target.disabled = false;
-    return showAlert("Please fill out all the requireds..front end");
+    return showAlert("Please fill out all the required fields!");
   }
   return true;
 };
 
 const imageValidation = (e, files) => {
-  if (!files.length >= 1) {
+  console.log(imagePaths.length);
+  if (files.length <= 0 && imagePaths.length <= 0) {
     e.target.disabled = false;
-    return showAlert("Please upload an image..front end");
+    return showAlert("Please upload an image!");
   }
   return true;
 };
@@ -89,15 +90,6 @@ addProduct.addEventListener("click", async (e) => {
   e.target.disabled = true; // prevents from being submitted 2x
   loader.style.display = "block";
   if (!formValidation(e)) return;
-
-  const files = [];
-  fileUploads.forEach((fileUpload) => {
-    const file = fileUpload.files[0];
-    if (!file || !file.type.includes("image")) return;
-    return files.push(file);
-  });
-
-  if (!imageValidation(e, files)) return;
 
   getSizes();
   const productId = window.location.pathname.split("/")[2] || null;
@@ -110,6 +102,15 @@ addProduct.addEventListener("click", async (e) => {
       imagePaths.push(imgPath)
     }
   });
+
+  const files = [];
+  fileUploads.forEach((fileUpload) => {
+    const file = fileUpload.files[0];
+    if (!file || !file.type.includes("image")) return;
+    return files.push(file);
+  });
+
+  if (!imageValidation(e, files)) return;
 
   form.set(
     "product",
