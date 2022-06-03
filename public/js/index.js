@@ -72,6 +72,9 @@ const generatePaginatedMarkup = (curPage) => {
       </div>
     `;
   });
+  if (+curPage === 1 && +curPage > products.length / 2) {
+    return (btns.innerHTML = generateBtns(curPage, "hide", "hide"));
+  }
 
   if (+curPage === 1) {
     return (btns.innerHTML = generateBtns(curPage, "hide"));
