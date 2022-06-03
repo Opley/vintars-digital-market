@@ -68,7 +68,7 @@ router
 
 //prettier-ignore
 router
-  .route("/update-a-review")
+  .route("/update-a-review/:id")
   .patch(authController.isAuth, reviewController.isOwner, reviewController.updateReview)
 
 //prettier-ignore

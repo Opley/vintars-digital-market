@@ -2,19 +2,14 @@ const catchAsync = require("./../utils/catchAsync");
 
 exports.isOwner = (Model) =>
   catchAsync(async (req, res, next) => {
-    const { id } = req.params || req.body;
-    console.log(id, "💥💥💥");
-
+    const { id } = req.params;
     const doc = await Model.findOne({ _id: id });
-    console.log(doc);
 
     if (!doc) {
       return res
         .status(403)
         .json({ status: "failed", data: "Unable to find document!" });
     }
-
-    console.log(doc, req.user.email);
 
     if (doc.owner === req.user.id || doc.owner === req.user.email) {
       return next();

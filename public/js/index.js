@@ -92,19 +92,18 @@ const generatePaginatedMarkup = (curPage) => {
 productsContainer.addEventListener("click", (e) => {
   const btn = e.target.closest(".btn");
   if (!btn) return;
-  console.log(window.scrollY);
+
   const page = btn.dataset.goto;
   generatePaginatedMarkup(page);
 
   localStorage.setItem("currentPage", page);
-  // window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   productsContainer.scrollIntoView({
     behavior: "smooth",
     block: "start",
-    // inline: "nearest",
   });
 });
 
 window.onload = () => {
+  localStorage.setItem("currentPage", 1);
   generatePaginatedMarkup(localStorage.getItem("currentPage"));
 };

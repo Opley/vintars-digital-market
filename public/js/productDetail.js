@@ -190,7 +190,7 @@ addReviewBtn.addEventListener("click", async (e) => {
 
   if (reviewId) {
     // update
-    submitReview("/update-a-review", "PATCH", {
+    submitReview(`/update-a-review/${reviewId}`, "PATCH", {
       id: reviewId,
       review: reviewInput.value,
     });
