@@ -6,6 +6,7 @@ const globalErrorHandler = require("./controllers/errorController");
 const viewRouter = require("./routes/viewRoutes");
 const s3Router = require("./routes/s3Router");
 const unauthorizeAccessRouter = require("./routes/unauthorizeRoute");
+const likesRoutes = require("./routes/likesRoutes");
 
 //========== Static Path
 const staticPath = path.join(__dirname, "/public");
@@ -29,6 +30,7 @@ app.use((req, res, next) => {
 app.use("/s3url", s3Router);
 app.use("/unauthorize-access", unauthorizeAccessRouter);
 app.use("/", viewRouter);
+app.use("/api/likes", likesRoutes);
 
 // ===========Error handling middleware
 app.use(globalErrorHandler);

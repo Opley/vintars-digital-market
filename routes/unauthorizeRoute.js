@@ -12,5 +12,6 @@ const getUnauthorizePg = (req, res) => {
 router
     .route('/')
     .get(getUnauthorizePg)
+// .patch(getUnauthorizePg)
 
 module.exports = router;

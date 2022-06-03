@@ -1,4 +1,4 @@
-const authController = require("../controllers/authenticationController");
+const authController = require("../controllers/authController");
 const { deleteS3Object } = require("../controllers/s3Controller.js");
 const express = require("express");
 

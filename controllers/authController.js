@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { Users } = require("../public/js/userSchema");
-const productModel = require("../models/productModel");
+const { Users } = require("../models/Users");
+const { Products } = require("../models/Products");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
@@ -77,10 +77,17 @@ exports.isAuth = catchAsync(async (req, res, next) => {
 
 exports.isOwner = async (req, res, next) => {
   console.log("====================isOwner====================");
-  const user = req.user;
-  const result = await productModel.validateOwner(req.params.id, user.email);
-  if (!result) return res.redirect("/unauthorize-access");
+  const user = req.user.email;
+  const productOwner = await Products.findOne({ _id: req.params.id });
+  // const result = await productModel.validateOwner(req.params.id, user.email);
+  if (!productOwner) return res.redirect("/unauthorize-access");
   next();
+
+  // exports.validateOwner = async (productID, userEmail) => {
+  //   const product = await Products.findOne({ _id: productID });
+  //   if (!product) return false;
+  //   return true;
+  // };
 };
 
 exports.logout = async (req, res, next) => {

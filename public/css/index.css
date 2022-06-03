@@ -144,12 +144,17 @@ main {
 .heart {
   right: 2px;
   top: 2px;
-  color: #e24c4b;
+  color: #383838;
   position: absolute;
+}
+
+.red-heart {
+  color: #e24c4b;
 }
 
 footer {
   padding: 5vw;
+  margin-top: 1rem;
   padding-top: 0;
   color: #e9f5e7;
   background-color: #383838;

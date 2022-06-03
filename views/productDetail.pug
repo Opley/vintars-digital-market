@@ -5,6 +5,10 @@ block styles
     link(rel="stylesheet", href="../css/utils.css")
     link(rel="stylesheet", href="../css/productDetails.css")
     link(rel="stylesheet", href="https://css.gg/close.css")
+    link(rel="stylesheet", href="https://css.gg/css?=|math-plus")
+    link(rel="stylesheet", href="https://css.gg/math-minus.css")
+
+
 
 block content 
 
@@ -50,8 +54,31 @@ block content
 
 
             .btns 
-                span.add-to-cart.btn PM is the key
-      
+                span.add-to-cart.btn PM is the key 
+                span.reviewsBtn.btn Reviews
+        
+        .reviews.hide
+            .add-a-review <i class="gg-math-plus"></i>
+            .review-input-box
+                - const name = user ? user.name : ''
+                span.name=name
+                - const review = (product?.reviews.find(obj => obj.user[0].id === user?.id))
+                textarea.review-input(name="review-input", placeholder=`${!name ? "you must log in!" :"Add your review here!"}`)=`${review ? review.review : ""}`
+                btn.add-review-submit-btn(data-reviewId=review ? review._id : '')=`${review ? "resubmit" : !name ? 'login' : "submit"}`
+
+            - product.reviews.reverse()
+           
+            each review in product.reviews
+                .review-box
+                    - console.log(review.user)
+                    span.name.nameTag=review.user[0].name
+                    p.review=`"${review.review}"`
+                    span.createdAt=`- Created ${review.createdSince === 0 ? 'today' : review.createdSince + ' day(s) ago!'}`
+
+            
+            //- .review-box
+            //-     span.name John Doe.
+            //-     p.review Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut aperiam nihil praesentium sequi? Accusanti
 
     script(type="module" src="../../js/utils.js")
     script(type="module" src="../../js/productDetail.js")

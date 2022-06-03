@@ -1,0 +1,21 @@
+.btns {
+  /* margin: 2.5rem 1rem; */
+  display: flex;
+  /* gap: 1rem; */
+  justify-content: space-around;
+}
+
+.btn {
+  outline: none;
+  border: none;
+  border-radius: 8px;
+  color: #e9f5e7;
+  background-color: #383838;
+  padding: 0.75rem 2rem;
+  cursor: pointer;
+}
+
+.hide {
+  opacity: 0;
+  pointer-events: none;
+}

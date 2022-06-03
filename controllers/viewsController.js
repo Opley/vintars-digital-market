@@ -1,9 +1,7 @@
-const User = require("../models/userModel");
-const Product = require("../models/productModel");
-const productModel = require("../models/productModel");
-const { Products } = require("../public/js/userSchema");
+const { Users } = require("../models/Users");
+const { Products } = require("../models/Products");
+const factory = require("../controllers/handlerFactory");
 const catchAsync = require("../utils/catchAsync");
-const AppError = require("../utils/appError");
 
 exports.getHomePg = catchAsync(async (req, res, next) => {
   const products = await Products.find();
@@ -24,8 +22,14 @@ exports.getSignupPg = (req, res) => {
 };
 
 exports.getSellersPg = async (req, res, next) => {
-  const products = await productModel.getOwnedProducts(req.user.email);
-  console.log(products);
+  // const products = await productModel.getOwnedProducts(req.user.email);
+  const products = await Products.find({ email: req.user.email });
+
+  // exports.getOwnedProducts = async (user) => {
+  //   const products = await Products.find({ email: user });
+  //   return products;
+  // };
+
   res.status(200).render("seller", {
     title: `VDM | Seller's Page`,
     products,
@@ -44,14 +48,14 @@ exports.getAllProductsPg = async (req, res, next) => {
 
 exports.getProductDetailPg = catchAsync(async (req, res, next) => {
   const id = req.params.id;
-  const product = await Products.findOne({ _id: id });
-  const owner = await User.getUserByEmail(product.email);
-
+  const product = await Products.findOne({ _id: id }).populate("reviews");
+  const owner = await Users.findOne({ email: product.email });
+  console.log(req.user || null);
   res.status(200).render("productDetail", {
     title: `VDM | Product Detail`,
     product,
     owner,
-    user: req.user,
+    user: req.user || null,
   });
 });
 
@@ -69,27 +73,35 @@ exports.getAddProductPg = async (req, res, next) => {
   });
 };
 
-exports.postProductDB = catchAsync(async (req, res, next) => {
-  const user = req.user;
-  req.body.email = user.email;
-  const product = await Product.addProduct(req.body);
-  res.json(product);
-});
+// exports.postProductDB = catchAsync(async (req, res, next) => {
+//   const user = req.user;
+//   req.body.email = user.email;
+//   const product = await Product.addProduct(req.body);
+//   res.json(product);
+// });
+
+// exports.deleteProduct = factory.deleteOne(Products);
+
+// exports.isOwner = factory.isOwner(Products);
 
 exports.deleteProduct = catchAsync(async (req, res, next) => {
-  const { productID } = req.body;
-  const product = await Product.getProduct(productID);
-  await productModel.deleteProduct(productID);
-  if (!product) return next();
+  const { id } = req.body;
+  const product = await Products.findOneAndDelete({ _id: id });
+
+  if (!product) {
+    return res
+      .status(200)
+      .json({ status: "success", message: "product has been deleted" });
+  }
 
   req.product = product;
-
   return next();
 });
 
 exports.getUser = catchAsync(async (req, res) => {
   const { productID } = req.body;
-  const user = await User.getUser(productID);
+  const product = await Users.findOne({ _id: productID });
+  const user = await Users.findOne({ email: product.email });
 
   res.status(200).json(user);
 });

@@ -1,19 +1,12 @@
 const express = require("express");
-const restify = require("express-restify-mongoose");
-const { Products } = require("../public/js/userSchema");
+const reviewController = require("../controllers/reviewController");
 const viewsController = require("../controllers/viewsController");
-const authController = require("../controllers/authenticationController");
+const authController = require("../controllers/authController");
+const handlerFactory = require("../controllers/handlerFactory");
+const { Products } = require("../models/Products");
 const { deleteImg } = require("../controllers/s3Controller.js");
 
 const router = express.Router();
-restify.serve(router, Products, {
-  postCreate: function (req, res, next) {
-    const result = req.erm.result;
-
-    result.tempFilePath = ["test", "test2"];
-    next();
-  },
-});
 
 router.use(authController.isLoggedIn);
 
@@ -42,12 +35,12 @@ router.get("/product-detail/:id", viewsController.getProductDetailPg);
 router
   .route("/add-a-product")
   .get(authController.isAuth,  viewsController.getAddProductPg)
-  .post(viewsController.postProductDB)
+// .post(viewsController.postProductDB)
 
 // prettier-ignore
 router
   .route("/edit-a-product/:id")
-  .get(authController.isAuth, authController.isOwner, viewsController.getAddProductPg)
+  .get(authController.isAuth, handlerFactory.isOwner(Products), viewsController.getAddProductPg)
 
 // prettier-ignore
 router
@@ -57,7 +50,8 @@ router
 // prettier-ignore
 router
 .route("/delete-a-product")
-.post( viewsController.deleteProduct, deleteImg)
+.post( handlerFactory.isOwner(Products) ,viewsController.deleteProduct, deleteImg)
+.delete(viewsController.deleteProduct, )
 
 router.get("/all-products", viewsController.getAllProductsPg);
 
@@ -67,6 +61,26 @@ router
   .get()
   .post(viewsController.getUser)
 
+//prettier-ignore
+router
+  .route("/add-a-review")
+  .post(authController.isAuth, reviewController.setReviewUserId, reviewController.createReview)
+
+//prettier-ignore
+router
+  .route("/update-a-review")
+  .patch(authController.isAuth, reviewController.isOwner, reviewController.updateReview)
+
+//prettier-ignore
+router
+  .route("/delete-a-review")
+  .delete(reviewController.deleteReview)
+
+//prettier-ignore
+router
+  .route("/get-a-review/:id")
+  .get(reviewController.getReview)
+  .post(reviewController.getReview)
 // prettier-ignore
 router
   .route("/*")

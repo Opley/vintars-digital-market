@@ -58,7 +58,7 @@ block content
         - const stocks = product?.stocks || '';
         input.stocks(type="number" placeholder="Items in stock" value=stocks)
         - const price = product?.price || '';
-        input.price(type="number" placeholder="price" value=price)
+        input.price(type="number" placeholder="price" required pattern="\d+" value=price)
 
     .btns 
         button.draft.btn save draft 

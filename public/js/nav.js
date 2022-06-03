@@ -103,6 +103,7 @@ const hamburgerMenu = document.querySelector(".hamburger-links");
 const arr = [hideMenu, hamburgerMenu];
 
 svgMenu.addEventListener("click", () => {
+  console.log("clicked svg menu");
   nav.style.opacity = 1;
   nav.style.pointerEvents = "auto";
   nav.style.transform = "translateX(0%)";

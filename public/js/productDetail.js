@@ -1,4 +1,6 @@
 // const productDetail = document.querySelector(".product-detail");
+import { showAlert } from "./utils.js";
+const loader = document.querySelector(".loader");
 
 // // style="background-image: url()"
 // const renderProductDetail = (data) => {
@@ -110,3 +112,94 @@ close.addEventListener("click", () => {
   contactInfo.classList.add("hide-contact-info");
 });
 // };
+
+//===================================================
+//==================REVIEWS
+
+const reviewsBtn = document.querySelector(".reviewsBtn");
+const reviews = document.querySelector(".reviews");
+const addAReview = document.querySelector(".add-a-review");
+const reviewInputBox = document.querySelector(".review-input-box");
+const reviewInput = document.querySelector(".review-input");
+const addReviewBtn = document.querySelector(".add-review-submit-btn");
+
+reviewsBtn.addEventListener("click", (e) => {
+  console.log("clicked review btn");
+  reviews.classList.toggle("hide");
+  if (!reviews.classList[1]) {
+    window.scrollBy({
+      top: 500,
+      left: 0,
+      behavior: "smooth",
+    });
+  } else {
+    console.log(this);
+    window.scrollBy({
+      top: -20,
+      left: 0,
+      behavior: "smooth",
+    });
+  }
+
+  addAReview.addEventListener("click", (e) => {
+    if (e.target.classList[0] === "gg-math-plus") {
+      addAReview.innerHTML = `<i class="gg-math-minus"></i>`;
+      reviewInputBox.classList.toggle("expand");
+      // reviewInputBox.style.maxHeight = "initial";
+    } else {
+      addAReview.innerHTML = `<i class="gg-math-plus"></i>`;
+      reviewInputBox.classList.toggle("expand");
+
+      // reviewInputBox.style.maxHeight = 0;
+    }
+  });
+});
+
+// const reviewBox = document.querySelectorAll(".review-box");
+const submitReview = async (url, method, body) => {
+  const result = await fetch(url, {
+    method: method,
+    headers: new Headers({ "Content-Type": "application/json" }),
+    body: JSON.stringify(body),
+  });
+  const review = await result.json();
+
+  // const nameTag = document.querySelector(".nameTag");
+  // var tempDiv = document.createElement("div");
+  // tempDiv.classList.add("review-box");
+  // tempDiv.innerHTML = `
+  // <span class="name"> ${nameTag.innerHTML} </span>
+  // <p class="review"> "${reviewInput.value}" </p>
+  // <span class="createdAt"> - Created today </span>
+  // `;
+
+  if (review.status === "success") {
+    window.location.reload();
+  }
+  if (review.status === "failed") {
+    return showAlert(review.data);
+  }
+};
+
+addReviewBtn.addEventListener("click", async (e) => {
+  console.log(e.target.innerHTML);
+  if (e.target.innerHTML === "login") return (window.location = "/login");
+  const reviewId = e.target.dataset.reviewid;
+  const product = window.location.pathname.split("/")[2];
+  loader.style.display = "block";
+
+  if (reviewId) {
+    // update
+    submitReview("/update-a-review", "PATCH", {
+      id: reviewId,
+      review: reviewInput.value,
+    });
+  } else {
+    //create
+    submitReview("/add-a-review", "post", {
+      review: reviewInput.value,
+      product,
+    });
+  }
+  // e.target.innerHTML = `<img class="" src="../img/loader.gif" alt="">`;
+});

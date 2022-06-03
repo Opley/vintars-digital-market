@@ -3,6 +3,7 @@ extends base
 block styles 
     link(rel="stylesheet", href="/css/nav.css")
     link(rel="stylesheet", href="/css/seller.css")
+    link(rel="stylesheet", href="/css/utils.css")
 
 block content  
     img.loader(src="img/loader.gif")
@@ -35,6 +36,7 @@ block content
                         img(src=image)
     
     script(type="module" src="../js/seller.js")
+    script(type="module" src="/js/utils.js")
     <script type="module" src="../js/utils.js"></script>
     
     include _scripts

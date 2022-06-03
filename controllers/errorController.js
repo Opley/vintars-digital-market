@@ -7,11 +7,31 @@ module.exports = (err, req, res, next) => {
   //prettier-ignore
   if (err.name === "TokenExpiredError" || err.name === "JsonWebTokenError") { 
     console.log("TokenExpiredError || JsonWebTokenError" );
+
+
+    if (req.headers.referer.split("/")[3] === "all-products") {
+      return res
+        .status(404)
+        .json({ status: "failed", data: "Please log in to like a product!" });
+    }
     return res.redirect("/unauthorize-access");
   }
 
   if (err.name === "EMPTY_COOKIE_ERROR") {
     console.log("EMPTY_COOKIE_ERROR");
+
+    if (req.headers.referer.split("/")[3] === "product-detail") {
+      return res
+        .status(404)
+        .json({ status: "failed", data: "Please log in to add a review" });
+    }
+
+    if (req.headers.referer.split("/")[3] === "all-products") {
+      return res
+        .status(404)
+        .json({ status: "failed", data: "Please log in to like a product!" });
+    }
+
     return res.redirect("/unauthorize-access");
   }
 
@@ -32,6 +52,15 @@ module.exports = (err, req, res, next) => {
 
   if (err.name === "CastError") {
     console.log(err.name);
+    const referer = req.headers.referer.split("/")[3];
+
+    // this is for liking an unknown product (hacker could change the dataset in the browser)
+    if (referer === "all-products" || "product-detail") {
+      return res
+        .status(301)
+        .json({ status: "failed", data: "Unable to find the document" });
+    }
+
     return res.redirect("/404");
   }
 
@@ -40,7 +69,6 @@ module.exports = (err, req, res, next) => {
     return res.status(400).json({ status: "failed", message: err.message });
   }
 
-  console.log(err, "💥💥");
   res.status(err.statusCode).json({
     status: err.status,
     statusCode: err.statusCode,

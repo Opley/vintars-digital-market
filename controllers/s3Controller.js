@@ -1,15 +1,10 @@
 const multer = require("multer");
 const multerS3 = require("multer-s3-transform");
 const sharp = require("sharp");
-const fetch = require("node-fetch");
-const { Headers } = fetch;
-// import fetch from "node-fetch";
-const { promisify } = require("util");
 const dotenv = require("dotenv");
 const aws = require("aws-sdk");
-const Product = require("../models/productModel");
+const { Products } = require("../models/Products");
 const AppError = require("../utils/appError");
-const { object } = require("sharp/lib/is");
 
 // const sharp = require("sharp");
 
@@ -33,7 +28,6 @@ const s3 = new aws.S3();
 
 // generate image upload link
 const generateUrl = async (req, res) => {
-  console.log(req.fields);
   let date = new Date();
   let id = parseInt(Math.random() * 1000000000);
 
@@ -162,6 +156,7 @@ const formValidation = (product) => {
     !product.price
   )
     return "Please fill out all required fields";
+
   return;
 };
 
@@ -172,6 +167,7 @@ var upload = multer({
     shouldTransform: function (req, file, cb) {
       const product = JSON.parse(req.body.product);
       if (formValidation(product)) return cb("fields");
+      // if (req.params.id !== req.user.email) return cb("test123");
       cb(null, /^image/i.test(file.mimetype));
     },
     transforms: [
@@ -218,11 +214,12 @@ var upload = multer({
 // });
 
 const uploadUserPhoto = (req, res, next) => {
+  console.time();
   upload.fields([
     { name: "product", maxCount: 1 },
     { name: "files", maxCount: 4 },
   ])(req, res, async (error) => {
-    const product = JSON.parse(req.body.product);
+    let product = JSON.parse(req.body.product);
     const errorMsg = formValidation(product);
 
     if (errorMsg) {
@@ -258,32 +255,43 @@ const uploadUserPhoto = (req, res, next) => {
     }
 
     product.email = req.user.email;
+    product.owner = req.user.email;
 
-    await Product.addProduct(product);
+    if (product.id) {
+      product = await Products.findOneAndUpdate(
+        { _id: product.id },
+        {
+          $set: {
+            name: product.name,
+            briefDes: product.briefDes,
+            detailedDes: product.detailedDes,
+            imagePaths: product.imagePaths,
+            sizes: product.sizes,
+            stocks: product.stocks,
+            price: product.price,
+          },
+        }
+      );
+    } else {
+      await Products.create(product);
+    }
 
+    console.timeEnd();
     console.log("Product created... or updated..");
     return res
       .status(200)
       .json({ status: "success", message: "Product has been created..." });
-    next();
   });
 };
 
 const deleteImg = async (req, res, next) => {
   const product = req.product;
 
-  if (!product) {
-    return res
-      .status(200)
-      .json({ status: "success", message: "product has been deleted" });
-  }
-
   const images = [];
 
   product.imagePaths.forEach((img) => {
     if (!img) return;
     const image = img.split(".com/")[1].replace("%40", "@");
-    console.log(image, " to be deleted");
     images.push({ Key: image });
   });
 
@@ -309,8 +317,6 @@ const deleteImg = async (req, res, next) => {
 const deleteS3Object = async (req, res, next) => {
   const { object } = req.body;
   const img = object.split(".com/")[1].split(`")`)[0].replace("%40", "@");
-  console.log(object);
-  console.log(img);
 
   var deleteParam = {
     Bucket: "vintar-digital-market",
@@ -322,7 +328,6 @@ const deleteS3Object = async (req, res, next) => {
       console.log("there was an error");
     } else {
       console.log("deleted");
-      console.log(data);
     }
   });
 };
