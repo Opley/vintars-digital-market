@@ -11,10 +11,10 @@ trash.forEach((el) =>
     const id = el.dataset.product_id;
 
     // delete product with the above product id
-    const res = await fetch("/delete-a-product", {
-      method: "post",
+    const res = await fetch(`/delete-a-product/${id}`, {
+      method: "DELETE",
       headers: new Headers({ "Content-Type": "application/json" }),
-      body: JSON.stringify({ id }),
+      // body: JSON.stringify({ id }),
     });
 
     const result = await res.json();

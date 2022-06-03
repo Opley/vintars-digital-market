@@ -82,10 +82,10 @@ exports.getAddProductPg = async (req, res, next) => {
 
 // exports.deleteProduct = factory.deleteOne(Products);
 
-// exports.isOwner = factory.isOwner(Products);
+exports.isOwner = factory.isOwner(Products);
 
 exports.deleteProduct = catchAsync(async (req, res, next) => {
-  const { id } = req.body;
+  const { id } = req.params;
   const product = await Products.findOneAndDelete({ _id: id });
 
   if (!product) {

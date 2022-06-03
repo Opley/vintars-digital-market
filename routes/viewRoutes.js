@@ -49,9 +49,9 @@ router
 
 // prettier-ignore
 router
-.route("/delete-a-product")
+.route("/delete-a-product/:id")
 .post( handlerFactory.isOwner(Products) ,viewsController.deleteProduct, deleteImg)
-.delete(viewsController.deleteProduct, )
+.delete(authController.isAuth, viewsController.isOwner, viewsController.deleteProduct, deleteImg )
 
 router.get("/all-products", viewsController.getAllProductsPg);
 
