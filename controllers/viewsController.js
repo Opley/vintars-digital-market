@@ -49,8 +49,13 @@ exports.getAllProductsPg = async (req, res, next) => {
 exports.getProductDetailPg = catchAsync(async (req, res, next) => {
   const id = req.params.id;
   const product = await Products.findOne({ _id: id }).populate("reviews");
+
+  if (!product)
+    return res
+      .status(404)
+      .json({ status: "failed", data: "the product no longer exist" });
+
   const owner = await Users.findOne({ email: product.email });
-  console.log(req.user || null);
   res.status(200).render("productDetail", {
     title: `VDM | Product Detail`,
     product,
@@ -86,6 +91,7 @@ exports.isOwner = factory.isOwner(Products);
 
 exports.deleteProduct = catchAsync(async (req, res, next) => {
   const { id } = req.params;
+
   const product = await Products.findOneAndDelete({ _id: id });
 
   if (!product) {

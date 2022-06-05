@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const Review = require("./Review");
+const Likes = require("./Likes");
 
 const productSchema = new mongoose.Schema(
   {
@@ -61,6 +63,19 @@ productSchema.pre(/^find/, function (next) {
   this.populate("reviews").populate({
     path: "likers",
     select: "userId",
+  });
+  next();
+});
+
+productSchema.pre("findOneAndDelete", async function (next) {
+  const doc = await this.model.findOne(this.getQuery());
+
+  doc.reviews.forEach(async (review) => {
+    await Review.deleteOne({ _id: review.id });
+  });
+
+  doc.likers.forEach(async (liker) => {
+    await Likes.deleteOne({ _id: liker.id });
   });
   next();
 });
