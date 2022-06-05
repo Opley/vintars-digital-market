@@ -77,6 +77,7 @@ const formValidation = (e) => {
 };
 
 const imageValidation = (e, files) => {
+  console.log(files);
   if (files.length <= 0 && imagePaths.length <= 0) {
     e.target.disabled = false;
     return showAlert("Please upload an image!");
@@ -84,13 +85,10 @@ const imageValidation = (e, files) => {
   return true;
 };
 
-console.log(product);
-
 //=================SUBMIT Btn
 addProduct.addEventListener("click", async (e) => {
   e.target.disabled = true; // prevents from being submitted 2x
   loader.style.display = "block";
-  console.log(price.value);
   if (!formValidation(e)) return;
 
   getSizes();
@@ -98,7 +96,7 @@ addProduct.addEventListener("click", async (e) => {
 
   labels.forEach((label) => {
     //prettier-ignore
-    if(label.style.backgroundImage.startsWith(`url("https://vintar-digital-market.s3.eu-central-1.amazonaws.com`)){
+    if(label.style.backgroundImage.startsWith(`url("https://vintarsdigitalmarket.s3.ap-northeast-2.amazonaws.com`)){
       const imgPath = label.style.backgroundImage.match(/(?:"[^"]*"|^[^"]*$)/)[0].replace(/"/g, "")
       if(imagePaths.includes(imgPath)) return;
       imagePaths.push(imgPath)
@@ -113,7 +111,7 @@ addProduct.addEventListener("click", async (e) => {
   });
 
   if (!imageValidation(e, files)) return;
-
+  console.log("test");
   form.set(
     "product",
     JSON.stringify({

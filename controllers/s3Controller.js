@@ -12,8 +12,8 @@ const AppError = require("../utils/appError");
 dotenv.config({ path: "./config.env" });
 
 //aws parameters
-const region = "eu-central-1";
-const bucketName = "vintar-digital-market";
+const region = "ap-northeast-2";
+const bucketName = "vintarsdigitalmarket";
 const accessKeyId = process.env.AWS_ACCESS_KEY;
 const secretAccessKey = process.env.AWS_SECRET_KEY;
 
@@ -296,7 +296,7 @@ const deleteImg = async (req, res, next) => {
   });
 
   var deleteParam = {
-    Bucket: "vintar-digital-market",
+    Bucket: bucketName,
     Delete: {
       Objects: images,
     },
@@ -319,7 +319,7 @@ const deleteS3Object = async (req, res, next) => {
   const img = object.split(".com/")[1].split(`")`)[0].replace("%40", "@");
 
   var deleteParam = {
-    Bucket: "vintar-digital-market",
+    Bucket: bucketName,
     Key: img,
   };
 
