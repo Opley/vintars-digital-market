@@ -2,6 +2,7 @@ const Likes = require("../models/Likes");
 const factory = require("./handlerFactory");
 const { Products } = require("../models/Products");
 const catchAsync = require("../utils/catchAsync");
+const { json } = require("express");
 
 // exports.likeProduct = async (req, res, next) => {
 //   const { productId } = req.body;
@@ -26,8 +27,12 @@ const catchAsync = require("../utils/catchAsync");
 exports.checkIfLiked = catchAsync(async (req, res, next) => {
   const { productId } = req.body;
   const userId = req.user.id;
-  console.log(userId, "💥💥💥");
+
   const product = await Products.findOne({ _id: productId });
+  if (!product)
+    return res
+      .status(404)
+      .json({ status: "failed", data: "The product no longer exist!" });
 
   let currentIndex = 0;
   const user = product.likers.find((liker, index) => {
