@@ -7,21 +7,21 @@ module.exports = (err, req, res, next) => {
   //prettier-ignore
   if (err.name === "TokenExpiredError" || err.name === "JsonWebTokenError") { 
     console.log("TokenExpiredError || JsonWebTokenError" );
-    const referer = req.headers.referer.split("/")[3]
-    console.log(referer)
-  
+    if(!req.headers.referer) return res.redirect("/unauthorize-access");
 
+
+    const referer = req.headers.referer.split("/")[3]
     if (referer === "all-products" || referer === "") {
       return res
         .status(404)
         .json({ status: "failed", data: "Please log in to like a product!" });
     }
 
-    return res.redirect("/unauthorize-access");
   }
 
   if (err.name === "EMPTY_COOKIE_ERROR") {
     console.log("EMPTY_COOKIE_ERROR");
+    if (!req.headers.referer) return res.redirect("/unauthorize-access");
     const referer = req.headers.referer.split("/")[3];
 
     if (referer === "product-detail") {
@@ -35,8 +35,6 @@ module.exports = (err, req, res, next) => {
         .status(404)
         .json({ status: "failed", data: "Please log in to like a product!" });
     }
-
-    return res.redirect("/unauthorize-access");
   }
 
   if (err.name === "USER_UNDEFINED") {
