@@ -16,7 +16,7 @@ router.use(authController.isLoggedIn);
 router
   .route("/")
   .get(generateUrl)
-  .post( uploadUserPhoto, resizeImg)
+  .post(uploadUserPhoto, resizeImg)
 
 //prettier-ignore
 router

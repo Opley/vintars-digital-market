@@ -8,15 +8,53 @@ let s3uploadPaths = [];
 // let files = [];
 let sizes = [];
 
+//**dataURL to blob**
+function dataURLtoBlob(dataurl) {
+  var arr = dataurl.split(","),
+    mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new Blob([u8arr], { type: mime });
+}
+
 let form = new FormData();
 const objectsToBeDeleted = [];
 const imagesToBeDeleted = [];
+const fileToUpload = [];
+
 fileUploads.forEach((fileUpload, index) =>
   fileUpload.addEventListener("change", async (e) => {
-    const file = fileUpload.files[0];
+    let file = fileUpload.files[0];
+    console.log(file);
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = (e) => {
+      const imgElement = document.createElement("img");
+      imgElement.src = e.target.result;
+
+      imgElement.onload = function (e) {
+        const canvas = document.createElement("canvas");
+        const MAX_WIDTH = 500;
+        const ratio = MAX_WIDTH / e.target.width;
+
+        canvas.width = MAX_WIDTH;
+        canvas.height = e.target.height * ratio;
+
+        const ctx = canvas.getContext("2d");
+
+        ctx.drawImage(e.target, 0, 0, canvas.width, canvas.height);
+        const srcEncoded = ctx.canvas.toDataURL(e.target, "image/jpeg", 90);
+        console.log(dataURLtoBlob(srcEncoded));
+        fileToUpload.push(dataURLtoBlob(srcEncoded));
+      };
+    };
     if (!file.type.includes("image")) return showAlert("Upload image only!");
 
-    console.log(e.target.nextSibling.style.backgroundImage);
     //prettier-ignore
     if (e.target.nextSibling.style.backgroundImage.startsWith(`url("https://vintar-digital-market.s3.eu-central-1.amazonaws.com`)) {
       console.log("image deleted in s3 bucket");
@@ -104,14 +142,17 @@ addProduct.addEventListener("click", async (e) => {
   });
 
   const files = [];
-  fileUploads.forEach((fileUpload) => {
-    const file = fileUpload.files[0];
+  // fileUploads.forEach((fileUpload) => {
+  //   const file = fileUpload.files[0];
+  //   if (!file || !file.type.includes("image")) return;
+  //   return files.push(file);
+  // });
+  fileToUpload.forEach((file) => {
     if (!file || !file.type.includes("image")) return;
     return files.push(file);
   });
 
   if (!imageValidation(e, files)) return;
-  console.log("test");
   form.set(
     "product",
     JSON.stringify({
@@ -134,9 +175,11 @@ addProduct.addEventListener("click", async (e) => {
     return form.append("files", file);
   });
 
+  console.log("fetching /s3url", form.getAll("product", "files"));
   const data = await fetch("/s3url", {
     method: "POST",
     body: form,
+    // form data doesn't require a header. default: "multipart/form-data"
   });
 
   const datas = await data.json();
@@ -159,7 +202,7 @@ addProduct.addEventListener("click", async (e) => {
   //===============================================
 
   console.log("change location to /seller");
-  return (location.href = "/seller");
+  // return (location.href = "/seller");
 
   //   const msg = fetchProduct.message.match(/\Please.*?\!/gm);
   //   const newMsg = msg.join("\n");

@@ -165,6 +165,7 @@ var upload = multer({
     s3: s3,
     bucket: bucketName,
     shouldTransform: function (req, file, cb) {
+      console.log("uploaded this file: ", file);
       const product = JSON.parse(req.body.product);
       if (formValidation(product)) return cb("fields");
       // if (req.params.id !== req.user.email) return cb("test123");
@@ -219,6 +220,7 @@ const uploadUserPhoto = (req, res, next) => {
     { name: "product", maxCount: 1 },
     { name: "files", maxCount: 4 },
   ])(req, res, async (error) => {
+    console.log(req.body, req.files);
     let product = JSON.parse(req.body.product);
     const errorMsg = formValidation(product);
 
