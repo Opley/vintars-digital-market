@@ -164,36 +164,37 @@ var upload = multer({
   storage: multerS3({
     s3: s3,
     bucket: bucketName,
-    shouldTransform: function (req, file, cb) {
-      console.log("uploaded this file: ", file);
-      const product = JSON.parse(req.body.product);
-      if (formValidation(product)) return cb("fields");
-      // if (req.params.id !== req.user.email) return cb("test123");
-      cb(null, /^image/i.test(file.mimetype));
-    },
-    transforms: [
-      {
-        id: "original",
-        key: function (req, file, cb) {
-          //prettier-ignore
-          cb(null, req.user.email + Date.now() + parseInt(Math.random() *10000000000) + ".jpg");
-        },
-        transform: async function (req, file, cb) {
-          //Perform desired transformations
-          cb(
-            null,
-            sharp()
-              .resize(500, undefined, { fit: "contain" })
-              .jpeg({ quality: 90 })
-              .toFormat("jpeg")
-              .withMetadata()
+    // shouldTransform: function (req, file, cb) {
+    //   console.log("uploaded this file: ", file);
+    //   const product = JSON.parse(req.body.product);
+    //   if (formValidation(product)) return cb("fields");
+    //   console.log(file.mimetype);
+    //   cb(null, /^image/i.test(file.mimetype));
+    // },
+    // transforms: [
+    //   {
+    //     id: "original",
+    //     key: function (req, file, cb) {
+    //       //prettier-ignore
+    //       cb(null, req.user.email + Date.now() + parseInt(Math.random() *10000000000) + ".jpg");
+    //     },
+    // transform: async function (req, file, cb) {
+    //   console.log(file, "💥💥💥");
+    //   //Perform desired transformations
+    //   cb(
+    //     null,
+    //     sharp()
+    //       .resize(500, undefined, { fit: "contain" })
+    //       .jpeg({ quality: 90 })
+    //       .toFormat("jpeg")
+    //       .withMetadata()
 
-            // .toBuffer()
-            // .withMetadata({ orientation })
-          );
-        },
-      },
-    ],
+    //     // .toBuffer()
+    //     // .withMetadata({ orientation })
+    //   );
+    // },
+    // },
+    // ],
   }),
 });
 
@@ -222,6 +223,7 @@ const uploadUserPhoto = (req, res, next) => {
   ])(req, res, async (error) => {
     let product = JSON.parse(req.body.product);
     const errorMsg = formValidation(product);
+    console.log(error);
 
     if (errorMsg) {
       return next(new AppError("FILE_UPLOAD_ERROR", errorMsg, 404));
@@ -250,8 +252,11 @@ const uploadUserPhoto = (req, res, next) => {
     const { files } = req.files || null;
     if (files) {
       files.forEach((file) => {
-        const [tempFiles] = file.transforms;
-        product.imagePaths.push(tempFiles.location);
+        // const [tempFiles] = file.transforms;
+        // product.imagePaths.push(tempFiles.location);
+        console.log(file);
+        const location = file.location;
+        product.imagePaths.push(location);
       });
     }
 

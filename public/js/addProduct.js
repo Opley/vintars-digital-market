@@ -8,19 +8,6 @@ let s3uploadPaths = [];
 // let files = [];
 let sizes = [];
 
-//**dataURL to blob**
-function dataURLtoBlob(dataurl) {
-  var arr = dataurl.split(","),
-    mime = arr[0].match(/:(.*?);/)[1],
-    bstr = atob(arr[1]),
-    n = bstr.length,
-    u8arr = new Uint8Array(n);
-  while (n--) {
-    u8arr[n] = bstr.charCodeAt(n);
-  }
-  return new Blob([u8arr], { type: mime });
-}
-
 let form = new FormData();
 const objectsToBeDeleted = [];
 const imagesToBeDeleted = [];
@@ -48,27 +35,32 @@ fileUploads.forEach((fileUpload, index) =>
     let productImage = document.querySelector(".product-image");
     productImage.src = bg;
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
+    const data = await file.arrayBuffer();
+    const blob = new Blob([data]);
+    console.log(data, blob);
 
-    reader.onload = (e) => {
-      const imgElement = document.createElement("img");
-      imgElement.src = e.target.result;
+    window.URL = window.URL || window.webkitURL;
+    const blobUrl = window.URL.createObjectURL(blob);
+    console.log(blobUrl);
 
-      imgElement.onload = function (e) {
-        const canvas = document.createElement("canvas");
-        const MAX_WIDTH = 500;
-        const ratio = MAX_WIDTH / e.target.width;
+    const imgElement = new Image();
+    imgElement.src = blobUrl;
 
-        canvas.width = MAX_WIDTH;
-        canvas.height = e.target.height * ratio;
+    imgElement.onload = function (e) {
+      const canvas = document.createElement("canvas");
+      const MAX_WIDTH = 500;
+      const ratio = MAX_WIDTH / e.target.width;
 
-        const ctx = canvas.getContext("2d");
+      canvas.width = MAX_WIDTH;
+      canvas.height = e.target.height * ratio;
 
-        ctx.drawImage(e.target, 0, 0, canvas.width, canvas.height);
-        const srcEncoded = ctx.canvas.toDataURL(e.target, "image/jpeg", 0.9);
-        fileToUpload[index] = dataURLtoBlob(srcEncoded);
-      };
+      const ctx = canvas.getContext("2d");
+
+      ctx.drawImage(e.target, 0, 0, canvas.width, canvas.height);
+
+      // const srcEncoded = ctx.canvas.toDataURL(e.target, "image/jpeg");
+      const srcEncoded = canvas.toDataURL("image/jpeg", 0.9);
+      fileToUpload[index] = new Blob([srcEncoded], { type: "image/jpeg" });
     };
   })
 );
@@ -116,6 +108,7 @@ const formValidation = (e) => {
 };
 
 const imageValidation = (e, files) => {
+  console.log(files);
   if (files.length <= 0 && imagePaths.length <= 0) {
     e.target.disabled = false;
     return showAlert("Please upload an image!");
@@ -153,7 +146,7 @@ addProduct.addEventListener("click", async (e) => {
     if (!file || !file.type.includes("image")) return;
     return files.push(file);
   });
-  console.log(files);
+  console.log(fileToUpload, files);
 
   if (!imageValidation(e, files)) return;
   form.set(
