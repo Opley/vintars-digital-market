@@ -220,7 +220,6 @@ const uploadUserPhoto = (req, res, next) => {
     { name: "product", maxCount: 1 },
     { name: "files", maxCount: 4 },
   ])(req, res, async (error) => {
-    console.log(req.body, req.files);
     let product = JSON.parse(req.body.product);
     const errorMsg = formValidation(product);
 

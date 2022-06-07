@@ -30,6 +30,24 @@ fileUploads.forEach((fileUpload, index) =>
   fileUpload.addEventListener("change", async (e) => {
     let file = fileUpload.files[0];
     console.log(file);
+
+    if (!file.type.includes("image")) return showAlert("Upload image only!");
+
+    //prettier-ignore
+    if (e.target.nextSibling.style.backgroundImage.startsWith(`url("https://vintar-digital-market.s3.eu-central-1.amazonaws.com`)) {
+      console.log("image deleted in s3 bucket");
+      objectsToBeDeleted.push(e.target.nextSibling.style.backgroundImage)
+      imagesToBeDeleted.push(e.target.nextSibling.style.backgroundImage)
+    }
+
+    //Set background image with the file's blob
+    const bg = URL.createObjectURL(file);
+    let label = document.querySelector(`label[for=${fileUpload.id}]`);
+    label.style.backgroundImage = `url(${bg}`;
+
+    let productImage = document.querySelector(".product-image");
+    productImage.src = bg;
+
     const reader = new FileReader();
     reader.readAsDataURL(file);
 
@@ -48,27 +66,10 @@ fileUploads.forEach((fileUpload, index) =>
         const ctx = canvas.getContext("2d");
 
         ctx.drawImage(e.target, 0, 0, canvas.width, canvas.height);
-        const srcEncoded = ctx.canvas.toDataURL(e.target, "image/jpeg", 90);
-        console.log(dataURLtoBlob(srcEncoded));
-        fileToUpload.push(dataURLtoBlob(srcEncoded));
+        const srcEncoded = ctx.canvas.toDataURL(e.target, "image/jpeg", 0.9);
+        fileToUpload[index] = dataURLtoBlob(srcEncoded);
       };
     };
-    if (!file.type.includes("image")) return showAlert("Upload image only!");
-
-    //prettier-ignore
-    if (e.target.nextSibling.style.backgroundImage.startsWith(`url("https://vintar-digital-market.s3.eu-central-1.amazonaws.com`)) {
-      console.log("image deleted in s3 bucket");
-      objectsToBeDeleted.push(e.target.nextSibling.style.backgroundImage)
-      imagesToBeDeleted.push(e.target.nextSibling.style.backgroundImage)
-    }
-
-    //Set background image with the file's blob
-    const bg = URL.createObjectURL(file);
-    let label = document.querySelector(`label[for=${fileUpload.id}]`);
-    label.style.backgroundImage = `url(${bg}`;
-
-    let productImage = document.querySelector(".product-image");
-    productImage.src = bg;
   })
 );
 
@@ -115,7 +116,6 @@ const formValidation = (e) => {
 };
 
 const imageValidation = (e, files) => {
-  console.log(files);
   if (files.length <= 0 && imagePaths.length <= 0) {
     e.target.disabled = false;
     return showAlert("Please upload an image!");
@@ -145,12 +145,15 @@ addProduct.addEventListener("click", async (e) => {
   // fileUploads.forEach((fileUpload) => {
   //   const file = fileUpload.files[0];
   //   if (!file || !file.type.includes("image")) return;
+
   //   return files.push(file);
   // });
+
   fileToUpload.forEach((file) => {
     if (!file || !file.type.includes("image")) return;
     return files.push(file);
   });
+  console.log(files);
 
   if (!imageValidation(e, files)) return;
   form.set(
@@ -202,7 +205,7 @@ addProduct.addEventListener("click", async (e) => {
   //===============================================
 
   console.log("change location to /seller");
-  // return (location.href = "/seller");
+  return (location.href = "/seller");
 
   //   const msg = fetchProduct.message.match(/\Please.*?\!/gm);
   //   const newMsg = msg.join("\n");
