@@ -164,6 +164,13 @@ var upload = multer({
   storage: multerS3({
     s3: s3,
     bucket: bucketName,
+    key: function (req, file, cb) {
+      //prettier-ignore
+      cb(null, req.user.email + Date.now() + parseInt(Math.random() *10000000000) + ".jpg");
+    },
+    // TODO ==> figure out a way to rename the image
+    // and add type to amazon s3
+
     // shouldTransform: function (req, file, cb) {
     //   console.log("uploaded this file: ", file);
     //   const product = JSON.parse(req.body.product);
@@ -197,23 +204,6 @@ var upload = multer({
     // ],
   }),
 });
-
-// const result = await images.map(async (img, i) => {
-//   const { orientation } = await sharp(img.buffer).metadata();
-//   const blankImg = await sharp(img.buffer).toBuffer();
-//   return await sharp(blankImg)
-//     .withMetadata({ orientation })
-//     .resize(500, undefined, {
-//       fit: "contain",
-//     })
-//     .toFormat("jpeg")
-//     .jpeg({ quality: 90 })
-//     .toBuffer();
-
-// const upload = multer({
-//   storage: multerStorage,
-//   fileFilter: multerFilter,
-// });
 
 const uploadUserPhoto = (req, res, next) => {
   console.time();

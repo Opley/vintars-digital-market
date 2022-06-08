@@ -41,7 +41,6 @@ fileUploads.forEach((fileUpload, index) =>
 
     window.URL = window.URL || window.webkitURL;
     const blobUrl = window.URL.createObjectURL(blob);
-    console.log(blobUrl);
 
     const imgElement = new Image();
     imgElement.src = blobUrl;
@@ -57,10 +56,14 @@ fileUploads.forEach((fileUpload, index) =>
       const ctx = canvas.getContext("2d");
 
       ctx.drawImage(e.target, 0, 0, canvas.width, canvas.height);
-
-      // const srcEncoded = ctx.canvas.toDataURL(e.target, "image/jpeg");
-      const srcEncoded = canvas.toDataURL("image/jpeg", 0.9);
-      fileToUpload[index] = new Blob([srcEncoded], { type: "image/jpeg" });
+      canvas.toBlob(
+        function (blob) {
+          console.log(URL.createObjectURL(blob));
+          fileToUpload[index] = blob;
+        },
+        "image/jpeg",
+        0.92
+      );
     };
   })
 );
@@ -143,6 +146,7 @@ addProduct.addEventListener("click", async (e) => {
   // });
 
   fileToUpload.forEach((file) => {
+    console.log(file);
     if (!file || !file.type.includes("image")) return;
     return files.push(file);
   });
@@ -198,7 +202,7 @@ addProduct.addEventListener("click", async (e) => {
   //===============================================
 
   console.log("change location to /seller");
-  return (location.href = "/seller");
+  // return (location.href = "/seller");
 
   //   const msg = fetchProduct.message.match(/\Please.*?\!/gm);
   //   const newMsg = msg.join("\n");
