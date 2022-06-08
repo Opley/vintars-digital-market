@@ -56,14 +56,10 @@ fileUploads.forEach((fileUpload, index) =>
       const ctx = canvas.getContext("2d");
 
       ctx.drawImage(e.target, 0, 0, canvas.width, canvas.height);
-      canvas.toBlob(
-        function (blob) {
-          console.log(URL.createObjectURL(blob));
-          fileToUpload[index] = blob;
-        },
-        "image/jpeg",
-        0.92
-      );
+      canvas.toBlob(function (blob) {
+        console.log(URL.createObjectURL(blob));
+        fileToUpload[index] = blob;
+      }, "image/jpeg");
     };
   })
 );
