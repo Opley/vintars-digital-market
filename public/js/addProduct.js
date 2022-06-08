@@ -47,7 +47,7 @@ fileUploads.forEach((fileUpload, index) =>
 
     imgElement.onload = function (e) {
       const canvas = document.createElement("canvas");
-      const MAX_WIDTH = 500;
+      const MAX_WIDTH = 800;
       const ratio = MAX_WIDTH / e.target.width;
 
       canvas.width = MAX_WIDTH;
