@@ -202,7 +202,7 @@ addProduct.addEventListener("click", async (e) => {
   //===============================================
 
   console.log("change location to /seller");
-  // return (location.href = "/seller");
+  return (location.href = "/seller");
 
   //   const msg = fetchProduct.message.match(/\Please.*?\!/gm);
   //   const newMsg = msg.join("\n");
