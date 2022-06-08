@@ -105,9 +105,9 @@
 }
 
 @media screen and (min-width: 900px) {
-  .svgMenu {
+  /* .svgMenu {
     display: none;
-  }
+  } */
 
   .bigNav {
     display: block;

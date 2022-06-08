@@ -64,7 +64,7 @@ block content
                 span.name=name
                 - const review = (product?.reviews.find(obj => obj.user[0].id === user?.id))
                 textarea.review-input(name="review-input", placeholder=`${!name ? "you must log in!" :"Add your review here!"}`)=`${review ? review.review : ""}`
-                btn.add-review-submit-btn(data-reviewId=review ? review._id : '')=`${review ? "resubmit" : !name ? 'login' : "submit"}`
+                button.add-review-submit-btn(data-reviewId=review ? review._id : '', type="button")=`${review ? "resubmit" : !name ? 'login' : "submit"}`
 
             - product.reviews.reverse()
            

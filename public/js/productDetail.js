@@ -182,7 +182,8 @@ const submitReview = async (url, method, body) => {
 };
 
 addReviewBtn.addEventListener("click", async (e) => {
-  console.log(e.target.innerHTML);
+  e.target.disabled = true;
+
   if (e.target.innerHTML === "login") return (window.location = "/login");
   const reviewId = e.target.dataset.reviewid;
   const product = window.location.pathname.split("/")[2];
