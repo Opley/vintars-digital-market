@@ -1,12 +1,12 @@
 FROM node:14.18.0
 
-WORKDIR /home/vintars-digital-market
+WORKDIR /vintars-digital-market
 
 COPY package*.json ./
 
 RUN npm install 
 
-COPY . .
+COPY . ./vintars-digital-market
 
 EXPOSE 5000
 
