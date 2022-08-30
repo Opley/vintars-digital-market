@@ -31,7 +31,7 @@ services:
   #   environment:
   #     - MONGO_INITDB_ROOT_USERNAME=admin
   #     - MONGO_INITDB_ROOT_PASSWORD=password
-volumes:
-  #   # mongo-db:
-  # node_modules:
-  # vintars-digital-market:
+# volumes:
+#   # mongo-db:
+# node_modules:
+# vintars-digital-market:
