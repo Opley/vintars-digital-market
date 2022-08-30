@@ -7,7 +7,7 @@ services:
     build: .
     volumes:
       - node_modules:/vintars-digital-market/node_modules
-      - vintars-digital-market/:/vintars-digital-market/
+      - ./vintars-digital-market/:/vintars-digital-market/
     environment:
       - NODE_ENV=development
     #   - DATABASE=${DATABASE}
