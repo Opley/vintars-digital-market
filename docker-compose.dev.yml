@@ -16,8 +16,8 @@ services:
     #   - AWS_SECRET_KEY=${AWS_SECRET_KEY}
     #   - JWT_SECRET=${JWT_SECRET}
     #   - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
-    # ports:
-    #   - 5000:5000
+     ports:
+       - 5000:5000
 
     command: npm run dev
 
