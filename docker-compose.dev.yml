@@ -5,9 +5,9 @@ services:
     restart: always
     # image: opley/app-dev:2.0
     build: .
-    volumes:
-      # - node_modules:/vintars-digital-market/node_modules
-      # - vintars-digital-market:/vintars-digital-market/
+    # volumes:
+    # - node_modules:/vintars-digital-market/node_modules
+    # - vintars-digital-market:/vintars-digital-market/
     environment:
       - NODE_ENV=development
     #   - DATABASE=${DATABASE}
