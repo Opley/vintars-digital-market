@@ -34,3 +34,4 @@ services:
 volumes:
   #   # mongo-db:
   node_modules:
+  ./vintars-digital-market/:
