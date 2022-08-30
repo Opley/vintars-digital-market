@@ -21,7 +21,7 @@ services:
     env_file:
       - stack.env
 
-    command: npm run dev
+    command: npm run start
 
   # mongo:
   #   container_name: mongo
