@@ -1,3 +1,8 @@
+//=============Paymongo
+const Paymongo = require("paymongo");
+
+const paymongo = new Paymongo("sk_test_nYyPmVJ9A2HNKg4ns1aeeVhG");
+
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const path = require("path");
@@ -31,6 +36,31 @@ app.use("/s3url", s3Router);
 app.use("/unauthorize-access", unauthorizeAccessRouter);
 app.use("/", viewRouter);
 app.use("/api/likes", likesRoutes);
+
+app.post("/paymongo-hook", async (req, res) => {
+  console.log("paymongo hook", "💥💥💥💥");
+
+  const { data } = req.body;
+
+  const newData = {
+    data: {
+      attributes: {
+        amount: data.attributes.data.attributes.amount,
+        currency: "PHP",
+        source: {
+          id: data.id, // Id of the Source resource.
+          type: "source", //
+        },
+      },
+    },
+  };
+
+  if (data.attributes.type === "source.chargeable") {
+    const result = await paymongo.payments.create(newData);
+
+    console.log(result);
+  }
+});
 
 // ===========Error handling middleware
 app.use(globalErrorHandler);
